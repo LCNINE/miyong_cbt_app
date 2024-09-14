@@ -1,12 +1,49 @@
-import './index.css'
+import React from 'react';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import Home from './pages/index/Home';
+import Test from './pages/test/Test';
+import Retest from './pages/retest/Retest';
+import Ai from './pages/ai/Ai';
+import Layout from './pages/layout/Layout';
 
-function App() {
 
+const router = createBrowserRouter([
+  {
+    path: "",
+    element: <Layout/>,
+    children: [
+      {
+        path: "/",
+        element: <Home/>
+      },
+      {
+        path: "/test",
+        element: <Test/>
+      },
+      {
+        path: "/retest",
+        element: <Retest/>
+      },
+      {
+        path: "/ai",
+        element: <Ai/>
+      },
+    ]
+  }
+])
+
+export default function App (){
   return (
-    <div>
-      <h1>Hello World!!</h1>
-    </div>
+      <RouterProvider router={router}/>
+    // <Router>
+    //   <Routes>
+    //     <Route path="" element={<Layout/>}>
+    //       <Route path="/" element={<Home />} />
+    //       <Route path="/test" element={<Test />} />
+    //       <Route path="/retest" element={<Retest />} />
+    //       <Route path="/ai" element={<Ai />} />
+    //     </Route>
+    //   </Routes>
+    // </Router>
   )
 }
-
-export default App

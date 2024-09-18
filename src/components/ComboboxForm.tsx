@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useNavigate } from "react-router-dom" // react-router-dom에서 useNavigate 가져오기
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -51,11 +52,15 @@ const FormSchema = z.object({
 })
 
 export function ComboboxForm() {
+  const navigate = useNavigate() // useNavigate 훅 사용
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    // 서브밋 시 /test 경로로 이동하며 폼 데이터를 쿼리 파라미터로 전달
+    navigate(`/test?license=${data.license}&madeAt=${data.madeAt}`)
+    
     toast({
       title: "You submitted the following values:",
       description: (

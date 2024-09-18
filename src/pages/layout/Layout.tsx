@@ -12,7 +12,7 @@ import { Outlet } from 'react-router-dom';
 // const Layout: React.FC<LayoutProps> = ({ children }) => {
 const Layout = () => {
   return (
-    <div className='max-w-screen-md h-screen max-h-screen flex flex-col mx-auto'>
+    <div className='max-w-screen-md h-screen max-h-screen flex flex-col mx-auto shadow-md'>
       <Header />
       
       <main className='flex-1 overflow-y-auto '>

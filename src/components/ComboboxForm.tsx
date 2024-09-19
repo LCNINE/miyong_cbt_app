@@ -5,7 +5,9 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useNavigate } from "react-router-dom" // react-router-dom에서 useNavigate 가져오기
+import { useState, useEffect } from "react"
 
+import { supabase } from "@/lib/supabaseClient" // Supabase 클라이언트 가져오기
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -19,7 +21,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -32,16 +33,6 @@ import {
 } from "@/components/ui/popover"
 import { toast } from "@/hooks/use-toast"
 
-const licenses = [
-  { label: "미용사(일반)", value: "미용사(일반)" },
-  { label: "미용사(피부)", value: "미용사(피부)" },
-] as const
-
-const madeAts = [
-  { label: "2024년 10월 10일", value: "2024년 10월 10일" },
-  { label: "2024년 10월 11일", value: "2024년 10월 11일" },
-] as const
-
 const FormSchema = z.object({
   license: z.string({
     required_error: "Please select a license.",
@@ -51,11 +42,63 @@ const FormSchema = z.object({
   }),
 })
 
+// License 타입 정의
+interface License {
+  license: string
+}
+
 export function ComboboxForm() {
   const navigate = useNavigate() // useNavigate 훅 사용
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      license: '',
+    }
   })
+
+  // 라이선스 및 날짜 상태 관리
+  const [licenses, setLicenses] = useState<License[]>([])
+  const [madeAts, setMadeAts] = useState<{ label: string; value: string }[]>([])
+
+  // Supabase에서 라이선스 데이터 가져오기
+  useEffect(() => {
+    const fetchLicenses = async () => {
+      const { data, error } = await supabase
+        .from('licenses')  // licenses 테이블에서
+        .select('license') // license 컬럼만 가져오기
+
+      if (error) {
+        console.error("Error fetching licenses:", error)
+      } else {
+        setLicenses(data || []) // 가져온 데이터를 상태로 설정
+      }
+    }
+
+    const fetchMadeAts = async () => {
+      const { data, error } = await supabase
+        .from('madeAts')  // madeAts 테이블에서 데이터 가져오기
+        .select('label, value')
+
+      if (error) {
+        console.error("Error fetching madeAts:", error)
+      } else {
+        setMadeAts(data || []) // 가져온 데이터를 상태로 설정
+      }
+    }
+
+    fetchLicenses()
+    fetchMadeAts()
+  }, [])
+
+  // licenses가 업데이트된 후 기본값을 설정
+  useEffect(() => {
+    if (licenses.length > 0) {
+      console.log("licenses[0]"+licenses[0].license)
+      form.reset({
+        license: licenses[0].license, // 첫 번째 license로 기본값 설정
+      })
+    }
+  }, [licenses, form]) // licenses가 변경될 때마다 실행
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     // 서브밋 시 /test 경로로 이동하며 폼 데이터를 쿼리 파라미터로 전달
@@ -93,8 +136,8 @@ export function ComboboxForm() {
                     >
                       {field.value
                         ? licenses.find(
-                            (licenses) => licenses.value === field.value
-                          )?.label
+                            (licenses) => licenses.license === field.value
+                          )?.license
                         : "Select license"}
                       <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -111,17 +154,17 @@ export function ComboboxForm() {
                       <CommandGroup>
                         {licenses.map((license) => (
                           <CommandItem
-                            value={license.label}
-                            key={license.value}
+                            value={license.license}
+                            key={license.license}
                             onSelect={() => {
-                              form.setValue("license", license.value)
+                              form.setValue("license", license.license)
                             }}
                           >
-                            {license.label}
+                            {license.license}
                             <CheckIcon
                               className={cn(
                                 "ml-auto h-4 w-4",
-                                license.value === field.value
+                                license.license === field.value
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}

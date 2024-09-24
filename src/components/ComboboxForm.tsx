@@ -31,7 +31,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { toast } from "@/hooks/use-toast"
+import { License, MadeAt } from "@/type/testType"
 
 const FormSchema = z.object({
   license: z.string({
@@ -42,13 +42,9 @@ const FormSchema = z.object({
   }),
 })
 
-// License 타입 정의
-interface License {
-  license: string
-}
-
 export function ComboboxForm() {
   const navigate = useNavigate() // useNavigate 훅 사용
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -58,14 +54,14 @@ export function ComboboxForm() {
 
   // 라이선스 및 날짜 상태 관리
   const [licenses, setLicenses] = useState<License[]>([])
-  const [madeAts, setMadeAts] = useState<{ label: string; value: string }[]>([])
+  const [madeAts, setMadeAts] = useState<MadeAt[]>([])
 
   // Supabase에서 라이선스 데이터 가져오기
   useEffect(() => {
     const fetchLicenses = async () => {
       const { data, error } = await supabase
         .from('licenses')  // licenses 테이블에서
-        .select('license') // license 컬럼만 가져오기
+        .select('id, license') // license 컬럼만 가져오기
 
       if (error) {
         console.error("Error fetching licenses:", error)
@@ -74,45 +70,73 @@ export function ComboboxForm() {
       }
     }
 
+    fetchLicenses()
+  }, [])
+
+  // license가 선택되면 해당 라이선스의 madeAts 데이터를 가져오기
+  useEffect(() => {
+    const selectedLicense = form.watch("license"); // form에서 선택된 license 값 가져오기
+
+    if (!selectedLicense) return; // 선택된 license가 없으면 종료
+    
     const fetchMadeAts = async () => {
+      const selectedLicenseId = licenses.find((license) => license.license === selectedLicense)?.id;
+
+      if (!selectedLicenseId) return; // 선택된 license에 해당하는 ID가 없으면 종료
+
+      // Supabase에서 직접 SQL 쿼리 실행 (RPC 호출)
       const { data, error } = await supabase
-        .from('madeAts')  // madeAts 테이블에서 데이터 가져오기
-        .select('label, value')
+        .rpc('get_distinct_made_at', { license_id: selectedLicenseId }); // RPC 함수 호출
 
       if (error) {
-        console.error("Error fetching madeAts:", error)
+        console.error("Error fetching madeAts:", error);
       } else {
-        setMadeAts(data || []) // 가져온 데이터를 상태로 설정
-      }
-    }
+        // label과 value 형태로 변환
+        const uniqueMadeAts = data.map((item: { made_at: string | number | Date }) => ({
+          label: new Date(item.made_at).toLocaleDateString(), // 날짜 포맷팅
+          value: item.made_at,
+        }));
 
-    fetchLicenses()
-    fetchMadeAts()
-  }, [])
+        setMadeAts(uniqueMadeAts); // 가져온 데이터를 상태로 설정
+        if (uniqueMadeAts.length > 0) {
+          form.setValue("madeAt", uniqueMadeAts[0].value); // 첫 번째 madeAt 값을 자동으로 설정
+        }
+      }
+    };
+
+    fetchMadeAts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch("license"), licenses]); // 선택된 license가 변경될 때마다 실행
+
+
 
   // licenses가 업데이트된 후 기본값을 설정
   useEffect(() => {
     if (licenses.length > 0) {
       console.log("licenses[0]"+licenses[0].license)
       form.reset({
-        license: licenses[0].license, // 첫 번째 license로 기본값 설정
+        license: '미용사(일반)', // 첫 번째 license로 기본값 설정
       })
     }
   }, [licenses, form]) // licenses가 변경될 때마다 실행
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // 서브밋 시 /test 경로로 이동하며 폼 데이터를 쿼리 파라미터로 전달
-    navigate(`/test?license=${data.license}&madeAt=${data.madeAt}`)
-    
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
-  }
+
+
+  // Form 제출 처리
+  const onSubmit = () => {
+    const selectedLicense = form.watch("license"); // form에서 선택된 license 값 가져오기
+    const selectedMadeAt = form.watch("madeAt"); // form에서 선택된 madeAt 값 가져오기
+
+    const selectedLicenseId = licenses.find((license) => license.license === selectedLicense)?.id;
+
+    if (!selectedLicenseId || !selectedMadeAt) {
+      console.error("License or madeAt not selected");
+      return;
+    }
+
+    // /test로 이동하면서 license_id와 made_at을 쿼리 파라미터로 전달
+    navigate(`/test?license_id=${selectedLicenseId}&made_at=${selectedMadeAt}`);
+  };
 
   return (
     <Form {...form}>
@@ -155,7 +179,7 @@ export function ComboboxForm() {
                         {licenses.map((license) => (
                           <CommandItem
                             value={license.license}
-                            key={license.license}
+                            key={license.id}
                             onSelect={() => {
                               form.setValue("license", license.license)
                             }}

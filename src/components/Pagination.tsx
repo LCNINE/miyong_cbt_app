@@ -24,7 +24,7 @@ export function Pagination({
   }
 
   return (
-    <div className="fixed bottom-0 w-full bg-gray-100 border-t border-gray-300 flex justify-around py-3">
+    <div className="w-full h-12 bg-gray-100 border-t border-gray-300 flex justify-around py-3 relative">
       <div className="text-center w-1/2 border-r-2 border-gray-300">
         <button onClick={goToPrevPage} disabled={currentPage === 1} className="w-full">
           prev

@@ -5,28 +5,33 @@ import Test from './pages/test/Test';
 import Retest from './pages/retest/Retest';
 import Ai from './pages/ai/Ai';
 import Layout from './pages/layout/Layout';
+import Result from './pages/test/result';
 
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <Layout/>,
     children: [
       {
-        path: "/",
+        path: "",
         element: <Home/>
       },
       {
-        path: "/test",
+        path: "test",
         element: <Test/>
       },
       {
-        path: "/retest",
+        path: "retest",
         element: <Retest/>
       },
       {
-        path: "/ai",
+        path: "ai",
         element: <Ai/>
+      },
+      {
+        path: "result",
+        element: <Result/>
       },
     ]
   }

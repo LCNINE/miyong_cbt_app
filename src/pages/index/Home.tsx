@@ -1,17 +1,9 @@
-import { ComboboxForm } from "../../components/ComboboxForm";
+import { ComboboxForm } from "./ComboboxForm";
 
-const Homedd: React.FC = () => {
-
+export default function Home (){
   return (
     <div className="flex flex-col items-center min-h-[80vh] justify-center bg-white">
       <ComboboxForm/>
     </div>
   );
-};
-
-
-export default function Home (){
-  return (
-    <Homedd />
-  )
 }

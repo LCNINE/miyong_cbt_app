@@ -1,11 +1,12 @@
-import React from 'react';
-import {createBrowserRouter, RouterProvider} from 'react-router-dom';
-import Home from './pages/index/Home';
-import Test from './pages/test/Test';
-import Retest from './pages/retest/Retest';
-import Ai from './pages/ai/Ai';
-import Layout from './pages/layout/Layout';
-import Result from './pages/test/result';
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import Layout from "./pages/layout/Layout"
+import Home from "./pages/index/Home"
+import Test from "./pages/test/Test"
+import Retest from "./pages/retest/Retest"
+import Ai from "./pages/ai/Ai"
+import Result from "./pages/test/result"
+import SignIn from "./pages/auth/sign-in"
+import SignUp from "./pages/auth/sign-up"
 
 
 const router = createBrowserRouter([
@@ -32,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: "result",
         element: <Result/>
+      },
+      {
+        path: "sign-in",
+        element: <SignIn/>
+      },
+      {
+        path: "sign-up",
+        element: <SignUp/>
       },
     ]
   }

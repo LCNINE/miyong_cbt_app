@@ -1,19 +1,19 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { Button } from "@/components/ui/button";
+import { incorrectAnswers } from "@/type/testType";
 
 export default function Result() {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
-  const license_id = queryParams.get("license_id");
-  const made_at = queryParams.get("made_at");
-  const answers = JSON.parse(queryParams.get("answers") || "[]"); // 전달받은 답안 데이터
+  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 사용
+  const { license_id, made_at, answers } = location.state || {};
 
   console.log(answers)
 
   const [score, setScore] = useState<number | null>(null);
   const [isPassed, setIsPassed] = useState<boolean | null>(null);
+  const [incorrectAnswers, setIncorrectAnswers] = useState<Array<incorrectAnswers>>([]); // 틀린 답안 저장할 배열
 
   // 결과 계산
   useEffect(() => {
@@ -31,6 +31,7 @@ export default function Result() {
       }
   
       let correctCount = 0;
+      const incorrectList: Array<{ questionId: number; selectedOption: number}> = [];
   
       // 사용자가 제출한 답안과 서버에서 받아온 정답을 비교
       answers.forEach((answer: { questionId: number; optionNo: number }) => {
@@ -39,12 +40,18 @@ export default function Result() {
         );
         if (correctOption && correctOption.no === answer.optionNo) {
           correctCount++;
+        }else if(correctOption && !(correctOption.no === answer.optionNo)){
+          incorrectList.push({
+            questionId: answer.questionId,
+            selectedOption: answer.optionNo
+          });
         }
       });
-      
 
-      // 60% 점수 계산
-      const calculatedScore = correctCount * 0.6;
+      // 틀린 문제를 상태로 저장
+      setIncorrectAnswers(incorrectList);
+      
+      const calculatedScore = correctCount * 10/6;
       setScore(calculatedScore);
 
       // 예를 들어 60점 이상이면 합격
@@ -54,6 +61,15 @@ export default function Result() {
     fetchResults();
   }, [answers, license_id, made_at]);
 
+  // 오답노트 페이지로 이동하는 함수
+  const handleReviewIncorrectAnswers = () => {
+    navigate("/retest", { state: { incorrectAnswers } }); // 오답노트 페이지로 이동하며, 틀린 답안을 상태로 전달
+  };
+  // 오답노트 페이지로 이동하는 함수
+  const handleToHome = () => {
+    navigate("/"); // 오답노트 페이지로 이동하며, 틀린 답안을 상태로 전달
+  };
+
   return (
     <div>
       <h1>{license_id} : {made_at} 모의고사 결과</h1>
@@ -61,6 +77,14 @@ export default function Result() {
         <div>
           <p>당신의 점수는: {Math.round(score)}점 입니다.</p>
           <p>{isPassed ? "합격" : "불합격"}</p>
+          <Button onClick={handleToHome} className="mt-4">
+              홈으로
+          </Button>
+          {score != 100 &&(
+            <Button onClick={handleReviewIncorrectAnswers} className="mt-4">
+              오답노트 보기
+            </Button>
+          )}
         </div>
       )}
     </div>

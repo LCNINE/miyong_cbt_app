@@ -37,9 +37,10 @@ export default function Header() {
           <SheetTrigger className='font-bold'>&#x22EE;</SheetTrigger>
           <SheetContent>
             <SheetHeader>
-              <SheetTitle>뭔가 넣을 자리</SheetTitle>
+              <SheetTitle>MY</SheetTitle>
               <SheetDescription>
-                아직 뭐 넣을지 생각 안함
+                <div><a href='/sign-in'>로그인/회원가입 하기</a></div>
+                <div><a href='https://almondyoung.com/product/search.html?keyword=%EA%B5%AD%EA%B0%80%EA%B3%A0%EC%8B%9C+%EC%9B%90%ED%8C%A8%EC%8A%A4'>무료 문제집 다운로드</a></div>
               </SheetDescription>
             </SheetHeader>
           </SheetContent>

@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
 import { useEffect, useState } from "react";
 
-import { PostList } from "@/components/PostList";
-import { Pagination } from "@/components/Pagination";
+import { PostList } from "./PostList.tsx";
+import { Pagination } from "./Pagination";
 import { supabase } from "@/lib/supabaseClient";
 import { Example, Option, Question, QuestionWithExamplesAndOptions } from "@/type/testType"; // 타입 import
 
@@ -13,7 +13,7 @@ export default function Test (){
   const postsPerPage =1;
 
   const queryParams = new URLSearchParams(location.search);
-  const license_id = queryParams.get("license_id");
+  const license_id = Number(queryParams.get("license_id"));
   const made_at = queryParams.get("made_at");
 
   const [questionData, setQuestionData] = useState<QuestionWithExamplesAndOptions[]>([]);
@@ -110,14 +110,15 @@ export default function Test (){
       questionId: parseInt(questionId),
       optionNo: optionNo,
     }));
-
-    // 선택한 답안과 license_id, made_at 정보를 URL 쿼리 파라미터로 전달
-    const queryParams = new URLSearchParams();
-    queryParams.append("license_id", license_id || "");
-    queryParams.append("made_at", made_at || "");
-    queryParams.append("answers", JSON.stringify(answers)); // 선택한 답안을 JSON으로 직렬화하여 전달
-
-    navigate(`/result?${queryParams.toString()}`); // 결과 페이지로 이동
+  
+    // navigate를 이용해 데이터를 state로 전달
+    navigate("/result", {
+      state: {
+        license_id: license_id,
+        made_at: made_at,
+        answers: answers,
+      },
+    });
   };
 
   return (
@@ -125,7 +126,7 @@ export default function Test (){
       <h1>{license} : {made_at} 모의고사</h1>
 
       <main className="flex-grow">
-        <PostList list={currentQuestion} onSelectOption={handleOptionSelect} selectedAnswers={selectedAnswers} />
+        <PostList list={currentQuestion} onSelectOption={handleOptionSelect} selectedAnswers={selectedAnswers} currentPage={currentPage} setCurrentPage={setCurrentPage} totalQuestions={questionData.length} />
       </main>
 
       <footer className="flex-grow-0">

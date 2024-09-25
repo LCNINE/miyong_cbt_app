@@ -14,7 +14,7 @@ export interface Question {
   id: number;
   no: number;
   content: string;
-  made_at: string;
+  made_at: string | null;
 }
 
 export interface Example {
@@ -36,7 +36,12 @@ export interface QuestionWithExamplesAndOptions {
   id: number;
   no: number;
   content: string;
-  made_at: string;
+  made_at: string | null;
   examples: Example[];
   options: Option[];
+}
+
+export interface incorrectAnswers {
+  questionId: number;
+  selectedOption: number;
 }

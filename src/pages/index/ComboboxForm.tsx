@@ -92,7 +92,7 @@ export function ComboboxForm() {
         console.error("Error fetching madeAts:", error);
       } else {
         // label과 value 형태로 변환
-        const uniqueMadeAts = data.map((item: { made_at: string | number | Date }) => ({
+        const uniqueMadeAts = data.map((item: { made_at: string }) => ({
           label: new Date(item.made_at).toLocaleDateString(), // 날짜 포맷팅
           value: item.made_at,
         }));

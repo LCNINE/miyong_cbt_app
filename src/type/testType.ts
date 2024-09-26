@@ -41,7 +41,7 @@ export interface QuestionWithExamplesAndOptions {
   options: Option[];
 }
 
-export interface incorrectAnswers {
+export interface incorrectAnswer {
   questionId: number;
   selectedOption: number;
 }

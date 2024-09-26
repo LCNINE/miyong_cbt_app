@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 import { PostList } from "./PostList.tsx";
 import { Pagination } from "./Pagination";
-import { supabase } from "@/lib/supabaseClient";
 import { Example, Option, Question, QuestionWithExamplesAndOptions } from "@/type/testType"; // 타입 import
+import { supabase } from "@/lib/supabaseClient.ts";
 
 export default function Test (){
   const location = useLocation();
@@ -106,11 +106,12 @@ export default function Test (){
 
   // 결과 제출 및 다음 페이지로 이동 함수
   const handleSubmit = () => {
-    const answers = Object.entries(selectedAnswers).map(([questionId, optionNo]) => ({
-      questionId: parseInt(questionId),
-      optionNo: optionNo,
+    // 모든 질문을 포함하여 선택하지 않은 문제는 기본값 null로 처리
+    const answers = questionData.map((question) => ({
+      questionId: question.id,
+      optionNo: selectedAnswers[question.id] || null, // 선택되지 않은 경우 null
     }));
-  
+
     // navigate를 이용해 데이터를 state로 전달
     navigate("/result", {
       state: {

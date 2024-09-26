@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@/components/ui/button";
 import { incorrectAnswers } from "@/type/testType";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function Result() {
   const location = useLocation();

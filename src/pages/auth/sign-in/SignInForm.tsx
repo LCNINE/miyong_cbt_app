@@ -5,43 +5,39 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { z } from "zod";
+import { SignInFormValues, signInSchema } from "./schema";
+import { signIn } from "./action";
 
-// Zod를 사용한 폼 스키마 정의
-const loginSchema = z.object({
-  email: z.string().email({ message: "이메일 형식으로 입력해주세요." }),
-  password: z.string().min(6, { message: "비밀번호는 6자리 이상 입력해주세요." }),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function SignInForm() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // 회원가입 후 다른 페이지로 이동하기 위해 useNavigate 사용
 
   // react-hook-form과 zod를 이용한 폼 상태 관리
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<SignInFormValues>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: '',      // 기본값 설정
+      password: '',   // 기본값 설정
+    },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
-    setLoading(true);
+  const submitSignIn = async (values: SignInFormValues) => {
+    // action.signIn 호출
+    const result = await signIn({ values, setLoading });
 
-    // 로그인 로직 (API 호출 등)
-    console.log("Logging in with values:", values);
-
-    // 예시로 setTimeout을 사용해 로딩 상태 확인
-    setTimeout(() => {
-      setLoading(false);
-      alert("Logged in!");
-      navigate("/"); // 회원가입 후 메인 페이지로 이동 (/ 대신 다른 경로로 변경 가능)
-    }, 1000);
+    if (result?.error) {
+      alert(result.error);
+    } else if (result?.data) {
+      alert("로그인 성공!");
+      navigate("/"); // 로그인 성공 시 메인 페이지로 이동
+    }
   };
 
   return (
     <div className="flex justify-center items-center max-h-full">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-white p-8 shadow-lg rounded-md max-w-sm w-full">
+        <form onSubmit={form.handleSubmit(submitSignIn)} className="space-y-6 bg-white p-8 shadow-lg rounded-md max-w-sm w-full">
           <h2 className="text-2xl font-semibold text-center">로그인</h2>
 
           {/* Email 필드 */}

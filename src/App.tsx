@@ -1,54 +1,73 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Layout from "./pages/layout/Layout"
-import Home from "./pages/index/Home"
-import Test from "./pages/test/Test"
-import Retest from "./pages/retest/Retest"
-import Ai from "./pages/ai/Ai"
-import Result from "./pages/test/result"
-import SignIn from "./pages/auth/sign-in"
-import SignUp from "./pages/auth/sign-up"
-
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "./pages/layout/Layout";
+import Home from "./pages/index/Home";
+import Test from "./pages/test/Test";
+import Retest from "./pages/retest/Retest";
+import Ai from "./pages/ai/Ai";
+import Result from "./pages/test/Result";
+import SignIn from "./pages/auth/sign-in/Sign-in";
+import SignUp from "./pages/auth/sign-up/Sign-up";
+import { AuthProvider } from "./pages/auth/AuthContext";
+import ProtectedRoute from "./pages/layout/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout/>,
+    element: <Layout />,
     children: [
       {
         path: "",
-        element: <Home/>
+        element: <Home />,
       },
       {
         path: "test",
-        element: <Test/>
+        element: (
+          <ProtectedRoute>
+            <Test />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "retest",
-        element: <Retest/>
+        element: (
+          <ProtectedRoute>
+            <Retest />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "ai",
-        element: <Ai/>
+        element: (
+          <ProtectedRoute>
+            <Ai />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "result",
-        element: <Result/>
+        element: (
+          <ProtectedRoute>
+            <Result />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "sign-in",
-        element: <SignIn/>
+        element: <SignIn />,
       },
       {
         path: "sign-up",
-        element: <SignUp/>
+        element: <SignUp />,
       },
-    ]
-  }
-])
+    ],
+  },
+]);
 
-export default function App (){
+export default function App() {
   return (
-      <RouterProvider router={router}/>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
     // <Router>
     //   <Routes>
     //     <Route path="" element={<Layout/>}>
@@ -59,5 +78,5 @@ export default function App (){
     //     </Route>
     //   </Routes>
     // </Router>
-  )
+  );
 }

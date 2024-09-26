@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './header/Header'; // Header 컴포넌트 import
 import Footer from './footer/Footer'; // Footer 컴포넌트 import
 import { Outlet, useLocation } from 'react-router-dom';
-import { Pagination } from '@/components/Pagination';
 
 // Props 타입 정의
 // interface LayoutProps {

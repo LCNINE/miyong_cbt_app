@@ -16,7 +16,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   // 로그인된 경우에만 자식 요소 렌더링
-  console.log(user)
   return <>{children}</>;
 };
 

@@ -1,19 +1,21 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { incorrectAnswers } from "@/type/testType";
+import { incorrectAnswer } from "@/type/testType";
 import { supabase } from "@/lib/supabaseClient";
+import { useAuth } from "../auth/AuthContext";
 
 export default function Result() {
   const location = useLocation();
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 사용
   const { license_id, made_at, answers } = location.state || {};
+  const { user, loading } = useAuth();
 
   console.log(answers)
 
   const [score, setScore] = useState<number | null>(null);
   const [isPassed, setIsPassed] = useState<boolean | null>(null);
-  const [incorrectAnswers, setIncorrectAnswers] = useState<Array<incorrectAnswers>>([]); // 틀린 답안 저장할 배열
+  const [incorrectAnswers, setIncorrectAnswers] = useState<Array<incorrectAnswer>>([]); // 틀린 답안 저장할 배열
 
   // 결과 계산
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function Result() {
       }
   
       let correctCount = 0;
-      const incorrectList: Array<{ questionId: number; selectedOption: number}> = [];
+      const incorrectList: Array<incorrectAnswer> = [];
   
       // 사용자가 제출한 답안과 서버에서 받아온 정답을 비교
       answers.forEach((answer: { questionId: number; optionNo: number }) => {
@@ -50,6 +52,24 @@ export default function Result() {
 
       // 틀린 문제를 상태로 저장
       setIncorrectAnswers(incorrectList);
+      console.log()
+      
+      if (!loading && user && incorrectAnswers && incorrectAnswers.length > 0) {
+        console.log(11111111111111)
+        // incorrectAnswers 배열을 map으로 변환한 후에 insert에 전달
+        const insertData = incorrectAnswers.map(answers => ({
+          question_id: answers.questionId,
+          chose_answer: answers.selectedOption,
+          user_id: user.id, // useAuth로부터 받은 user 객체의 id 사용
+        }));
+
+        // insert 호출
+        const { error: insertError } = await supabase
+          .from('wrong_logs')
+          .insert(insertData);
+
+        if (insertError) throw insertError; // 에러가 있으면 던지기
+      }
       
       const calculatedScore = correctCount * 10/6;
       setScore(calculatedScore);
@@ -59,13 +79,35 @@ export default function Result() {
     };
   
     fetchResults();
-  }, [answers, license_id, made_at]);
+  }, []);
+
+  useEffect(() => {
+    const insertWrongLogs = async () => {
+      if (!loading && user && incorrectAnswers && incorrectAnswers.length > 0) {
+        console.log(11111111111111)
+        // incorrectAnswers 배열을 map으로 변환한 후에 insert에 전달
+        const insertData = incorrectAnswers.map(answers => ({
+          question_id: answers.questionId,
+          chose_answer: answers.selectedOption,
+          user_id: user.id, // useAuth로부터 받은 user 객체의 id 사용
+        }));
+
+        // insert 호출
+        const { error: insertError } = await supabase
+          .from('wrong_logs')
+          .insert(insertData);
+
+        if (insertError) throw insertError; // 에러가 있으면 던지기
+      }
+    }
+    insertWrongLogs()
+  },[incorrectAnswers, loading, user])
 
   // 오답노트 페이지로 이동하는 함수
   const handleReviewIncorrectAnswers = () => {
     navigate("/retest", { state: { incorrectAnswers } }); // 오답노트 페이지로 이동하며, 틀린 답안을 상태로 전달
   };
-  // 오답노트 페이지로 이동하는 함수
+  // 홈으로 이동하는 함수
   const handleToHome = () => {
     navigate("/"); // 오답노트 페이지로 이동하며, 틀린 답안을 상태로 전달
   };

@@ -43,5 +43,16 @@ export interface QuestionWithExamplesAndOptions {
 
 export interface incorrectAnswer {
   questionId: number;
-  selectedOption: number;
+  selectedOption: number | null;
+}
+
+export interface reTestQustion {
+  id: number;
+  no: number;
+  content: string;
+  made_at: string | null;
+  examples: Example[];
+  options: Option[];
+  chose_option: number | null;
+  correct_option:number | null;
 }

@@ -4,11 +4,11 @@ import Home from "./pages/index/Home";
 import Test from "./pages/test/Test";
 import Retest from "./pages/retest/Retest";
 import Ai from "./pages/ai/Ai";
-import Result from "./pages/test/Result";
 import SignIn from "./pages/auth/sign-in/Sign-in";
 import SignUp from "./pages/auth/sign-up/Sign-up";
 import { AuthProvider } from "./pages/auth/AuthContext";
 import ProtectedRoute from "./pages/layout/ProtectedRoute";
+import Result from "./pages/test/result";
 
 const router = createBrowserRouter([
   {

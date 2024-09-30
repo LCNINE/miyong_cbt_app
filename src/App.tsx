@@ -22,9 +22,7 @@ const router = createBrowserRouter([
       {
         path: "test",
         element: (
-          <ProtectedRoute>
-            <Test />
-          </ProtectedRoute>
+          <Test />
         ),
       },
       {
@@ -46,9 +44,7 @@ const router = createBrowserRouter([
       {
         path: "result",
         element: (
-          <ProtectedRoute>
-            <Result />
-          </ProtectedRoute>
+          <Result />
         ),
       },
       {
@@ -68,15 +64,5 @@ export default function App() {
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-    // <Router>
-    //   <Routes>
-    //     <Route path="" element={<Layout/>}>
-    //       <Route path="/" element={<Home />} />
-    //       <Route path="/test" element={<Test />} />
-    //       <Route path="/retest" element={<Retest />} />
-    //       <Route path="/ai" element={<Ai />} />
-    //     </Route>
-    //   </Routes>
-    // </Router>
   );
 }

@@ -7,15 +7,7 @@ export default function Footer(){
       
       <Link to="/retest" className={`w-1/3 ${currentPath === '/retest' ? 'font-bold tracking-tight' : 'tracking-wide'}`}>
         <div className="text-center">
-          <p>복습하기</p>
-        </div>
-      </Link>
-
-      <div className="h-full w-px bg-black"></div> {/* 첫 번째 구분선 */}
-
-      <Link to="/" className={`w-1/3 ${currentPath === '/' ? 'font-bold tracking-tight' : ''}`}>
-        <div className="text-center">
-          <p>학습하기</p>
+          <p>틀린문제 다시보기</p>
         </div>
       </Link>
 

@@ -1,4 +1,6 @@
+import { supabase } from "@/lib/supabaseClient";
 import { QuestionWithExamplesAndOptions } from "@/type/testType";
+import { useEffect, useState } from "react";
 
 export function PostList({
   list,
@@ -15,6 +17,59 @@ export function PostList({
   setCurrentPage: (page: number) => void,
   totalQuestions: number
 }) {
+  const [signedUrls, setSignedUrls] = useState<{ [key: string]: string }>({});
+
+  // 이미지 URL 가져오는 함수
+  const fetchSignedUrl = async (path: string) => {
+    const { data, error } = await supabase.storage
+      .from('image')  // 버킷 이름을 넣으세요
+      .createSignedUrl(path, 60); // URL 유효 기간(초)
+    
+    if (error) {
+      console.error('Error fetching signed URL:', error);
+      return null;
+    }
+
+    return data?.signedUrl;
+  };
+
+  useEffect(() => {
+    const loadImageUrls = async () => {
+      const urls: { [key: string]: string } = {};
+
+      // 리스트의 모든 이미지 예시들에 대해 Signed URL 가져오기
+      for (const question of list) {
+        if (question.examples) {
+          for (const example of question.examples) {
+            if (example.type === 'image') {
+              console.log('example.content : ' + example.content);
+              const url = await fetchSignedUrl(example.content);  // 예시의 content가 파일의 경로라고 가정
+              if (url) {
+                console.log('url : ' + url)
+                urls[example.content] = url;
+              }
+            }
+          }
+        }
+
+        // 옵션들에 대한 이미지 URL도 가져오기
+        if (question.options) {
+          for (const option of question.options) {
+            if (option.type === 'image') {
+              const url = await fetchSignedUrl(option.content);
+              if (url) {
+                urls[option.content] = url;
+              }
+            }
+          }
+        }
+      }
+
+      setSignedUrls(urls);  // Signed URL들을 state로 저장
+    };
+
+    loadImageUrls();
+  }, [list]);
   const handleOptionSelect = (questionId: number, optionNo: number) => {
     onSelectOption(questionId, optionNo);
 
@@ -39,7 +94,11 @@ export function PostList({
                 {examples.map((example) => (
                   <li key={example.id}>
                     {example.type === 'image' ? (
-                      <img src={example.content} alt={`Example ${example.id}`} className="max-w-full" />
+                      <img
+                        src={signedUrls[example.content] || ''}
+                        alt={`Example ${example.id}`}
+                        className="max-w-full"
+                      />
                     ) : (
                       <p>{example.content}</p>
                     )}
@@ -71,7 +130,11 @@ export function PostList({
                       />
                       {option.no}.{' '}
                       {option.type === 'image' ? (
-                        <img src={option.content} alt={`Option ${option.no}`} className="max-w-full" />
+                        <img
+                          src={signedUrls[option.content] || ''}
+                          alt={`Option ${option.no}`}
+                          className="max-w-full"
+                        />
                       ) : (
                         <span>{option.content}</span>
                       )}

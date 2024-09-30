@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { QuestionWithExamplesAndOptions } from "@/type/testType";
-import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";  // ShadCN에서 제공하는 클래스 이름 유틸리티 함수
 
 export function PostList({
   list,
@@ -18,13 +19,14 @@ export function PostList({
   totalQuestions: number
 }) {
   const [signedUrls, setSignedUrls] = useState<{ [key: string]: string }>({});
+  const [loadingImages, setLoadingImages] = useState<{ [key: string]: boolean }>({}); // 이미지 로딩 상태
 
   // 이미지 URL 가져오는 함수
   const fetchSignedUrl = async (path: string) => {
     const { data, error } = await supabase.storage
       .from('image')  // 버킷 이름을 넣으세요
       .createSignedUrl(path, 60); // URL 유효 기간(초)
-    
+
     if (error) {
       console.error('Error fetching signed URL:', error);
       return null;
@@ -36,17 +38,17 @@ export function PostList({
   useEffect(() => {
     const loadImageUrls = async () => {
       const urls: { [key: string]: string } = {};
+      const loadingStates: { [key: string]: boolean } = {}; // 초기 로딩 상태 설정
 
       // 리스트의 모든 이미지 예시들에 대해 Signed URL 가져오기
       for (const question of list) {
         if (question.examples) {
           for (const example of question.examples) {
             if (example.type === 'image') {
-              console.log('example.content : ' + example.content);
               const url = await fetchSignedUrl(example.content);  // 예시의 content가 파일의 경로라고 가정
               if (url) {
-                console.log('url : ' + url)
                 urls[example.content] = url;
+                loadingStates[example.content] = true; // 로딩 중으로 설정
               }
             }
           }
@@ -59,6 +61,7 @@ export function PostList({
               const url = await fetchSignedUrl(option.content);
               if (url) {
                 urls[option.content] = url;
+                loadingStates[option.content] = true; // 로딩 중으로 설정
               }
             }
           }
@@ -66,10 +69,12 @@ export function PostList({
       }
 
       setSignedUrls(urls);  // Signed URL들을 state로 저장
+      setLoadingImages(loadingStates);  // 로딩 상태 저장
     };
 
     loadImageUrls();
   }, [list]);
+
   const handleOptionSelect = (questionId: number, optionNo: number) => {
     onSelectOption(questionId, optionNo);
 
@@ -77,6 +82,11 @@ export function PostList({
     if (currentPage < totalQuestions) {
       setCurrentPage(currentPage + 1);
     }
+  };
+
+  // 이미지 로딩 완료 핸들러
+  const handleImageLoad = (content: string) => {
+    setLoadingImages((prev) => ({ ...prev, [content]: false })); // 로딩 완료 시 false로 설정
   };
 
   return (
@@ -94,11 +104,19 @@ export function PostList({
                 {examples.map((example) => (
                   <li key={example.id}>
                     {example.type === 'image' ? (
-                      <img
-                        src={signedUrls[example.content] || ''}
-                        alt={`Example ${example.id}`}
-                        className="max-w-full"
-                      />
+                      <>
+                        {loadingImages[example.content] && (
+                          <div className="flex justify-center items-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-slate-500"></div> {/* ShadCN 스타일을 추가 */}
+                          </div>
+                        )}
+                        <img
+                          src={signedUrls[example.content] || ''}
+                          alt={`Example ${example.id}`}
+                          className={cn("max-w-full", loadingImages[example.content] ? "hidden" : "block")}
+                          onLoad={() => handleImageLoad(example.content)} // 이미지 로드 완료 시 호출
+                        />
+                      </>
                     ) : (
                       <p>{example.content}</p>
                     )}
@@ -130,11 +148,19 @@ export function PostList({
                       />
                       {option.no}.{' '}
                       {option.type === 'image' ? (
-                        <img
-                          src={signedUrls[option.content] || ''}
-                          alt={`Option ${option.no}`}
-                          className="max-w-full"
-                        />
+                        <>
+                          {loadingImages[option.content] && (
+                            <div className="flex justify-center items-center">
+                              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-slate-500"></div> {/* ShadCN 스타일을 추가 */}
+                            </div>
+                          )}
+                          <img
+                            src={signedUrls[option.content] || ''}
+                            alt={`Option ${option.no}`}
+                            className={cn("max-w-full", loadingImages[option.content] ? "hidden" : "block")}
+                            onLoad={() => handleImageLoad(option.content)} // 이미지 로드 완료 시 호출
+                          />
+                        </>
                       ) : (
                         <span>{option.content}</span>
                       )}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 // OpenAI API 응답 타입 정의
 interface OpenAIChatResponse {
@@ -14,8 +14,8 @@ export default function Ai() {
   const askGPT = async () => {
     setLoading(true);
     try {
-      // AxiosResponse<OpenAIChatResponse>로 응답 타입을 정의
-      const res: AxiosResponse<OpenAIChatResponse> = await axios.post(
+      // 명시적으로 AxiosResponse 타입을 정의하지 않아도 됨
+      const res = await axios.post<OpenAIChatResponse>(
         'https://api.openai.com/v1/chat/completions',
         {
           model: 'gpt-4',

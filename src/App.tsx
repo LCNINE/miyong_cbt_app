@@ -8,7 +8,7 @@ import SignIn from "./pages/auth/sign-in/Sign-in";
 import SignUp from "./pages/auth/sign-up/Sign-up";
 import { AuthProvider } from "./pages/auth/AuthContext";
 import ProtectedRoute from "./pages/layout/ProtectedRoute";
-import Result from "./pages/test/result";
+import Result from "./pages/test/Result";
 
 const router = createBrowserRouter([
   {

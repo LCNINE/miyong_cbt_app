@@ -1,16 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
 import { useEffect, useState } from "react";
-
-import { PostList } from "./PostList.tsx";
+import { PostList } from "./PostList";
 import { Pagination } from "./Pagination";
 import { Example, Option, Question, QuestionWithExamplesAndOptions } from "@/type/testType"; // 타입 import
 import { supabase } from "@/lib/supabaseClient.ts";
 
-export default function Test (){
+export default function Test () {
   const location = useLocation();
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 사용
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage =1;
+  const postsPerPage = 1;
 
   const queryParams = new URLSearchParams(location.search);
   const license_id = Number(queryParams.get("license_id"));
@@ -127,7 +126,14 @@ export default function Test (){
       <h1>{license} : {made_at} 모의고사</h1>
 
       <main className="flex-grow">
-        <PostList list={currentQuestion} onSelectOption={handleOptionSelect} selectedAnswers={selectedAnswers} currentPage={currentPage} setCurrentPage={setCurrentPage} totalQuestions={questionData.length} />
+        <PostList
+          list={currentQuestion}
+          onSelectOption={handleOptionSelect}
+          selectedAnswers={selectedAnswers}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalQuestions={questionData.length}
+        />
       </main>
 
       <footer className="flex-grow-0">
@@ -136,11 +142,11 @@ export default function Test (){
           postsPerPage={postsPerPage}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
+          handleSubmit={handleSubmit}  // handleSubmit을 Pagination에 전달
         />
       </footer>
 
-      {/* 결과 제출 버튼 */}
-      <button onClick={handleSubmit}>결과 제출</button>
+      {/* 별도의 결과 제출 버튼은 필요 없음, Pagination 내에서 처리됨 */}
     </div>
   );
 }

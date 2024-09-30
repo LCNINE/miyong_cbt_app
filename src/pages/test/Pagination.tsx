@@ -2,19 +2,16 @@ export function Pagination({
   postsNum,
   postsPerPage,
   setCurrentPage,
-  currentPage
+  currentPage,
+  handleSubmit,  // handleSubmit 함수를 props로 받아옵니다.
 }: {
   postsNum: number,
   postsPerPage: number,
   setCurrentPage: (page: number) => void,
-  currentPage: number
+  currentPage: number,
+  handleSubmit: () => void,  // 결과 제출 함수
 }) {
-  const pageList = [];
   const totalPages = Math.ceil(postsNum / postsPerPage);
-
-  for (let i = 1; i <= totalPages; i++) {
-    pageList.push(i);
-  }
 
   const goToNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -30,6 +27,7 @@ export function Pagination({
 
   return (
     <div className="w-full h-12 bg-gray-100 border-t border-gray-300 flex justify-between items-center py-3">
+      {/* 이전 페이지 버튼 */}
       <button
         onClick={goToPrevPage}
         disabled={currentPage === 1}
@@ -37,17 +35,27 @@ export function Pagination({
           currentPage === 1 ? "text-gray-400 cursor-not-allowed" : "hover:bg-gray-200"
         }`}
       >
-        Prev
+        이전
       </button>
-      <button
-        onClick={goToNextPage}
-        disabled={currentPage === totalPages}
-        className={`w-1/2 text-center py-2 ${
-          currentPage === totalPages ? "text-gray-400 cursor-not-allowed" : "hover:bg-gray-200"
-        }`}
-      >
-        Next
-      </button>
+
+      {/* 현재 페이지가 마지막 페이지일 경우 handleSubmit 실행, 그렇지 않으면 다음 페이지로 이동 */}
+      {currentPage === totalPages ? (
+        <button
+          onClick={handleSubmit}
+          className="w-1/2 text-center py-2 hover:bg-gray-200"
+        >
+          제출
+        </button>
+      ) : (
+        <button
+          onClick={goToNextPage}
+          className={`w-1/2 text-center py-2 ${
+            currentPage === totalPages ? "text-gray-400 cursor-not-allowed" : "hover:bg-gray-200"
+          }`}
+        >
+          다음
+        </button>
+      )}
     </div>
   );
 }

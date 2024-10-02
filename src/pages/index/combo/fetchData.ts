@@ -4,6 +4,7 @@ export async function fetchLicenses() {
   const { data, error } = await supabase
     .from('licenses')  // licenses 테이블에서
     .select('id, license') // license 컬럼만 가져오기
+    .order('license', { ascending: false })  // license를 기준으로 오름차순 정렬
 
   if (error) {
     console.error("Error fetching licenses:", error)

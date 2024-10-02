@@ -1,17 +1,14 @@
-"use client";
-
+import { useState, useEffect } from "react"; // useState 가져오기
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom"; // react-router-dom에서 useNavigate 가져오기
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -28,7 +25,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import useLicense from "./hook/useLicense";
 import useMadeAt from "./hook/useMadeAt";
@@ -43,7 +39,9 @@ const FormSchema = z.object({
 });
 
 export function ComboboxForm() {
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
+  const [licensePopoverOpen, setLicensePopoverOpen] = useState(false); // Popover 상태 관리
+  const [madeAtPopoverOpen, setMadeAtPopoverOpen] = useState(false); // madeAt Popover 상태 관리
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -58,10 +56,13 @@ export function ComboboxForm() {
     isLoading: licensesLoading,
   } = useLicense();
 
-  // 선택된 license 값이 변경될 때마다 license 데이터를 업데이트
   useEffect(() => {
     if (licenses && licenses.length > 0) {
-      form.setValue("license", licenses[1].license);
+      const reorderedLicenses = [
+        ...licenses.filter((license) => license.license !== "미용장"),
+        ...licenses.filter((license) => license.license === "미용장"),
+      ];
+      form.setValue("license", reorderedLicenses[0].license);
     }
   }, [licenses]);
 
@@ -78,10 +79,9 @@ export function ComboboxForm() {
     }
   }, [madeAts]);
 
-  // Form 제출 처리
   const onSubmit = () => {
-    const selectedLicense = form.watch("license"); // form에서 선택된 license 값 가져오기
-    const selectedMadeAt = form.watch("madeAt"); // form에서 선택된 madeAt 값 가져오기
+    const selectedLicense = form.watch("license");
+    const selectedMadeAt = form.watch("madeAt");
 
     if (licenses != null && licenses.length > 0) {
       const selectedLicenseId = licenses.find(
@@ -91,7 +91,6 @@ export function ComboboxForm() {
         console.error("License or madeAt not selected");
         return;
       }
-      // /test로 이동하면서 license_id와 made_at을 쿼리 파라미터로 전달
       navigate(
         `/test?license_id=${selectedLicenseId}&made_at=${selectedMadeAt}`
       );
@@ -102,7 +101,7 @@ export function ComboboxForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {licensesLoading ? (
-          <Skeleton className="h-8 w-[200px] rounded-md" /> // shadcn 스켈레톤 컴포넌트
+          <Skeleton className="h-8 w-[200px] rounded-md" />
         ) : (
           licenses &&
           licenses.length > 0 && (
@@ -111,8 +110,11 @@ export function ComboboxForm() {
               name="license"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>License</FormLabel>
-                  <Popover>
+                  <FormLabel>과목</FormLabel>
+                  <Popover
+                    open={licensePopoverOpen}
+                    onOpenChange={setLicensePopoverOpen}
+                  >
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -122,6 +124,7 @@ export function ComboboxForm() {
                             "w-[200px] justify-between",
                             !field.value && "text-muted-foreground"
                           )}
+                          onClick={() => setLicensePopoverOpen(!licensePopoverOpen)} // 버튼 클릭 시 팝업 열림/닫힘 토글
                         >
                           {field.value
                             ? licenses.find(
@@ -134,12 +137,7 @@ export function ComboboxForm() {
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0">
                       <Command>
-                        <CommandInput
-                          placeholder="Search license..."
-                          className="h-9"
-                        />
                         <CommandList>
-                          <CommandEmpty>No license found.</CommandEmpty>
                           <CommandGroup>
                             {licenses.map((license) => (
                               <CommandItem
@@ -147,6 +145,7 @@ export function ComboboxForm() {
                                 key={license.id}
                                 onSelect={() => {
                                   form.setValue("license", license.license);
+                                  setLicensePopoverOpen(false); // 선택 시 Popover 닫기
                                 }}
                               >
                                 {license.license}
@@ -172,7 +171,7 @@ export function ComboboxForm() {
           )
         )}
         {madeAtsLoading ? (
-          <Skeleton className="h-8 w-[200px] rounded-md" /> // madeAt 로딩 중일 때 스켈레톤
+          <Skeleton className="h-8 w-[200px] rounded-md" />
         ) : (
           madeAts &&
           madeAts.length > 0 && (
@@ -181,8 +180,11 @@ export function ComboboxForm() {
               name="madeAt"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>madeAt</FormLabel>
-                  <Popover>
+                  <FormLabel>회차</FormLabel>
+                  <Popover
+                    open={madeAtPopoverOpen}
+                    onOpenChange={setMadeAtPopoverOpen}
+                  >
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -192,6 +194,7 @@ export function ComboboxForm() {
                             "w-[200px] justify-between",
                             !field.value && "text-muted-foreground"
                           )}
+                          onClick={() => setMadeAtPopoverOpen(!madeAtPopoverOpen)} // 버튼 클릭 시 팝업 열림/닫힘 토글
                         >
                           {field.value
                             ? madeAts.find(
@@ -204,12 +207,7 @@ export function ComboboxForm() {
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0">
                       <Command>
-                        <CommandInput
-                          placeholder="Search framework..."
-                          className="h-9"
-                        />
                         <CommandList>
-                          <CommandEmpty>No framework found.</CommandEmpty>
                           <CommandGroup>
                             {madeAts.map((madeAt) => (
                               <CommandItem
@@ -217,6 +215,7 @@ export function ComboboxForm() {
                                 key={madeAt.value}
                                 onSelect={() => {
                                   form.setValue("madeAt", madeAt.value);
+                                  setMadeAtPopoverOpen(false); // 선택 시 Popover 닫기
                                 }}
                               >
                                 {madeAt.label}

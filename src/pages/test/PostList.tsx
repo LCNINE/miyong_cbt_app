@@ -65,10 +65,12 @@ export function PostList({
 
   const handleOptionSelect = (questionId: number, optionNo: number) => {
     onSelectOption(questionId, optionNo);
-
+  
     // 자동으로 다음 페이지로 이동, 마지막 페이지에서는 이동하지 않음
     if (currentPage < totalQuestions) {
-      setCurrentPage(currentPage + 1);
+      setTimeout(() => {
+        setCurrentPage(currentPage + 1);
+      }, 500); // 0.5초 딜레이 추가
     }
   };
 

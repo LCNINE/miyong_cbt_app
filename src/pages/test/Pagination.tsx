@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export function Pagination({
   postsNum,
   postsPerPage,
@@ -11,14 +13,25 @@ export function Pagination({
   currentPage: number,
   handleSubmit: () => void,  // 결과 제출 함수
 }) {
+  const [isTransitioning, setIsTransitioning] = useState(false); // 페이지 전환 중인지 관리
   const totalPages = Math.ceil(postsNum / postsPerPage);
 
   const goToNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (isTransitioning) return; // 전환 중일 때는 다른 동작 금지
+    setIsTransitioning(true); // 전환 상태로 설정
+    setTimeout(() => {
+      setCurrentPage(currentPage + 1);
+      setIsTransitioning(false); // 전환 상태 해제
+    }, 500); // 0.5초 딜레이
   };
 
   const goToPrevPage = () => {
-    setCurrentPage(currentPage - 1);
+    if (isTransitioning) return; // 전환 중일 때는 다른 동작 금지
+    setIsTransitioning(true); // 전환 상태로 설정
+    setTimeout(() => {
+      setCurrentPage(currentPage - 1);
+      setIsTransitioning(false); // 전환 상태 해제
+    }, 500); // 0.5초 딜레이
   };
 
   if (totalPages === 1) {

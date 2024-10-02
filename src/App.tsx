@@ -9,6 +9,7 @@ import SignUp from "./pages/auth/sign-up/Sign-up";
 import { AuthProvider } from "./pages/auth/AuthContext";
 import ProtectedRoute from "./pages/layout/ProtectedRoute";
 import Result from "./pages/test/Result";
+import RetestAfterTest from "./pages/retest/RetestAfterTest";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Retest />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "retest/afterTest",
+        element: (
+          <ProtectedRoute>
+            <RetestAfterTest />
           </ProtectedRoute>
         ),
       },

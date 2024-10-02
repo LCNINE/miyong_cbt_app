@@ -1,4 +1,5 @@
-import { ComboboxForm } from "./ComboboxForm";
+import { ComboboxForm } from "./combo/ComboboxForm";
+
 
 export default function Home (){
   return (

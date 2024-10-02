@@ -105,7 +105,7 @@ export default function Result() {
 
   // 오답노트 페이지로 이동하는 함수
   const handleReviewIncorrectAnswers = () => {
-    navigate("/retest", { state: { incorrectAnswers } }); // 오답노트 페이지로 이동하며, 틀린 답안을 상태로 전달
+    navigate("/retest/afterTest", { state: { incorrectAnswers } }); // 오답노트 페이지로 이동하며, 틀린 답안을 상태로 전달
   };
   // 홈으로 이동하는 함수
   const handleToHome = () => {

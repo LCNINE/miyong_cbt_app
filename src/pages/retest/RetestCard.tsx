@@ -157,7 +157,6 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
               <h4 className="text-md font-semibold text-green-500">
                 정답: {correct_option}
               </h4>
-              <p className="text-gray-700">해설: 추가해야함</p>
             </div>
           </li>
         )

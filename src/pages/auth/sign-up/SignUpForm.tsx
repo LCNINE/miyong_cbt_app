@@ -8,25 +8,38 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SignUpFormValues, signUpSchema } from "./schema";
 import { signUp } from "./action";
+import { useToast } from "@/hooks/use-toast";
 
 const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // 회원가입 후 다른 페이지로 이동하기 위해 useNavigate 사용
+  const { toast } = useToast(); // useToast 훅을 통해 toast 사용
 
   // react-hook-form과 zodResolver를 사용하여 폼 상태를 관리합니다.
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: '',      // 기본값 설정
-      name: '',      // 기본값 설정
       password: '',   // 기본값 설정
       confirmPassword: '',   // 기본값 설정
     },
   });
 
-  const submitSignUp = (values: SignUpFormValues) => {
+  const submitSignUp = async (values: SignUpFormValues) => {
     // onSubmit 로직을 SignUpHandler로 전달
-    signUp({ values, setLoading, navigate });
+    try {
+      await signUp({ values, setLoading, navigate });
+      // 회원가입 성공 시 toast 메시지 출력
+      toast({
+        title: "회원가입 성공",
+        description: "환영합니다! 회원가입이 완료되었습니다.",
+      });
+    } catch {
+      toast({
+        title: "회원가입 실패",
+        description: "회원가입 중 문제가 발생했습니다. 다시 시도해주세요.",
+      });
+    }
   };
 
   function goBackToSignIn() {
@@ -48,21 +61,6 @@ const SignUpForm = () => {
                 <FormLabel>이메일</FormLabel>
                 <FormControl>
                   <Input type="email" placeholder="Enter your email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Email 필드 */}
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>이름</FormLabel>
-                <FormControl>
-                  <Input type="text" placeholder="Enter your name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

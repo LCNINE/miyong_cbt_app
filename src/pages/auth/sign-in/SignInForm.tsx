@@ -7,11 +7,14 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { SignInFormValues, signInSchema } from "./schema";
 import { signIn } from "./action";
+import { useToast } from "@/hooks/use-toast";
 
 
 export default function SignInForm() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // 회원가입 후 다른 페이지로 이동하기 위해 useNavigate 사용
+  const { toast } = useToast(); // useToast 훅을 통해 toast 사용
+
 
   // react-hook-form과 zod를 이용한 폼 상태 관리
   const form = useForm<SignInFormValues>({
@@ -23,14 +26,19 @@ export default function SignInForm() {
   });
 
   const submitSignIn = async (values: SignInFormValues) => {
-    // action.signIn 호출
-    const result = await signIn({ values, setLoading });
-
-    if (result?.error) {
-      alert(result.error);
-    } else if (result?.data) {
-      alert("로그인 성공!");
+    try {
+      await signIn({ values, setLoading });
+      // 회원가입 성공 시 toast 메시지 출력
+      toast({
+        title: "로그인 성공",
+        description: "환영합니다!",
+      });
       navigate("/"); // 로그인 성공 시 메인 페이지로 이동
+    } catch {
+      toast({
+        title: "로그인 실패",
+        description: "아이다 혹은 비밀번호를 확인해 주세요.",
+      });
     }
   };
 

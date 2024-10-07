@@ -14,17 +14,12 @@ interface signUpProps {
 export async function signUp({ values, setLoading, navigate }: signUpProps){
   setLoading(true);
   try {
-    const { email, password, name } = values;
+    const { email, password } = values;
 
     // Supabase 회원가입 처리
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: {
-          full_name: name,
-        },
-      },
     });
 
     if (error) throw error;
@@ -35,13 +30,12 @@ export async function signUp({ values, setLoading, navigate }: signUpProps){
         .from('users')
         .insert({
           id: data.user.id,
-          name: name,
+          name: null,
           email: email,
         });
 
       if (insertError) throw insertError;
-
-      alert("회원가입에 성공했습니다. 입력하신 메일주소에서 추가 인증을 해주세요.");
+        
       navigate("/");
     }
   } catch (error) {

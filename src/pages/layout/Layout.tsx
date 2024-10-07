@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header/Header'; // Header 컴포넌트 import
 import Footer from './footer/Footer'; // Footer 컴포넌트 import
 import { Outlet, useLocation } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
 
 // Props 타입 정의
 // interface LayoutProps {
@@ -23,6 +24,7 @@ const Layout = () => {
       
       <main className='flex-1 overflow-y-auto '>
         <Outlet/>
+        <Toaster/>
       </main>
 
       {!isTestRoute && <Footer />}  {/* test 경로가 아닐 때만 Footer 보여줌 */}

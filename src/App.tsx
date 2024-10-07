@@ -10,6 +10,7 @@ import { AuthProvider } from "./pages/auth/AuthContext";
 import ProtectedRoute from "./pages/layout/ProtectedRoute";
 import Result from "./pages/test/Result";
 import RetestAfterTest from "./pages/retest/RetestAfterTest";
+import { ToastProvider } from "./components/ui/toast";
 
 const router = createBrowserRouter([
   {
@@ -69,7 +70,9 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>
     </AuthProvider>
   );
 }

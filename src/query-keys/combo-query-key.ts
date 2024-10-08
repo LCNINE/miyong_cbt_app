@@ -1,5 +1,6 @@
 export const COMBO = {
-  LICENSES: 'licenses',
+  LICENSE: 'licenses',
   MADEAT: 'madeAts',
+  Test: 'tests'
 };
 

@@ -36,7 +36,8 @@ export interface QuestionWithExamplesAndOptions {
   id: number;
   no: number;
   content: string;
-  made_at: string | null;
+  made_at?: string | null;
+  episode?: number | null;
   examples: Example[];
   options: Option[];
 }

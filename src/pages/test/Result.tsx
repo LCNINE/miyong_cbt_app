@@ -7,9 +7,7 @@ import { incorrectAnswer } from "@/type/testType";
 export default function Result() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { license_id, made_at, answers } = location.state || {};
-
-  console.log(answers);
+  const { licenseName, made_at, episode, answers } = location.state || {};
 
   const [score, setScore] = useState<number | null>(null);
   const [isPassed, setIsPassed] = useState<boolean | null>(null);
@@ -75,8 +73,11 @@ export default function Result() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full max-w-md mx-4 p-8"
       >
+        <h1 className="text-[1.4rem] font-semibold text-center text-gray-900 mb-8">
+          {licenseName} : {episode}회({made_at})
+        </h1>
         <h1 className="text-3xl font-semibold text-center text-gray-900 mb-8">
-          {license_id} : {made_at} 모의고사 결과
+          모의고사 결과
         </h1>
         {score !== null ? (
           <motion.div

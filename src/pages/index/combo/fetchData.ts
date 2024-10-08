@@ -30,3 +30,15 @@ export async function fetchMadeAts(selectedLicense : string) {
     return uniqueMadeAts;
   }
 };
+
+export async function fetchTests() {
+  const { data, error } = await supabase
+    .rpc('fetch_tests_with_license');  // RPC 함수 호출
+
+  if (error) {
+    console.error("Error fetching tests with licenses:", error);
+    return [];
+  } else {
+    return data;
+  }
+}

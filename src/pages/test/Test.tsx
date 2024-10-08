@@ -12,43 +12,36 @@ export default function Test () {
   const postsPerPage = 1;
 
   const queryParams = new URLSearchParams(location.search);
-  const license_id = Number(queryParams.get("license_id"));
-  const made_at = queryParams.get("made_at");
+  const test_id = Number(queryParams.get("test_id"));
 
   const [questionData, setQuestionData] = useState<QuestionWithExamplesAndOptions[]>([]);
-  const [license, setLicense] = useState<string | null>(null); 
+  const [licenseName, setLicenseName] = useState<string | null>(null);
+  const [licenseId, setLicenseId] = useState<number | null>(null);
+  const [madeAt, setMadeAt] = useState<string | null>(null);
+  const [episode, setEpisode] = useState<number | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number | null }>({}); // 사용자가 선택한 답안 저장
 
   // Supabase에서 데이터 가져오기
   useEffect(() => {
-    const fetchLicense = async () => {
-      const { data, error } = await supabase
-        .from('licenses')
-        .select('license')
-        .eq('id', license_id)
-        .single();
-  
-      if (error) {
-        console.error("Error fetching license:", error);
-      } else {
-        setLicense(data.license);
-      }
-    }
-  
-    fetchLicense();
 
     const fetchQuestions = async () => {
-      if (license_id && made_at) {
+      if (test_id) {
         const { data: questions, error: questionError } = await supabase
           .from("questions")
-          .select("*")
-          .eq("license", license_id)
-          .eq("made_at", made_at);
+          .select(`
+            *,
+            tests (
+              episode
+            )
+          `)
+          .eq("test_id", test_id)
+          .order('no', { ascending: true });
+
 
         if (questionError) {
           console.error("Error fetching questions:", questionError);
           return;
-        }
+        }else console.log(questions)
 
         const questionIds = questions.map((question: Question) => question.id);
 
@@ -85,11 +78,43 @@ export default function Test () {
         });
 
         setQuestionData(combinedData);
+
+        
+        if(questions){
+          setLicenseId(questions[0].license)
+          setMadeAt(questions[0].made_at)
+          if(questions[0].tests) setEpisode(questions[0].tests.episode)
+        }
       }
     };
 
+    
+
     fetchQuestions();
-  }, [license_id, made_at]);
+  }, [test_id]);
+
+  useEffect(() => {
+    const fetchLicense = async () => {
+      if(licenseId){
+        const { data:license, error } = await supabase
+          .from("licenses")
+          .select("license")
+          .eq("id", licenseId)
+          .single(); // single() 호출
+
+        if (error) {
+          console.error("Error fetching license:", error);
+          return;
+        }
+
+        if (license) {
+          setLicenseName(license.license); // data에서 license를 추출
+        }
+      }
+    }
+    
+    fetchLicense();
+  },[licenseId]);
 
   const firstPostIndex = (currentPage - 1) * postsPerPage;
   const lastPostIndex = firstPostIndex + postsPerPage;
@@ -114,8 +139,9 @@ export default function Test () {
     // navigate를 이용해 데이터를 state로 전달
     navigate("/result", {
       state: {
-        license_id: license_id,
-        made_at: made_at,
+        licenseName: licenseName,
+        made_at: madeAt,
+        episode: episode,
         answers: answers,
       },
     });
@@ -123,7 +149,7 @@ export default function Test () {
 
   return (
     <div className="flex flex-col h-full">
-      <h1>{license} : {made_at} 모의고사</h1>
+      <h1>{licenseName} : {episode}회({madeAt}) 모의고사</h1>
 
       <main className="flex-grow">
         <PostList

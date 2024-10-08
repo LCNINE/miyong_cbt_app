@@ -66,7 +66,7 @@ export default function Result() {
   };
 
   return (
-    <div className="min-h-full flex items-center justify-center bg-white">
+    <div className="h-full flex items-center justify-center bg-white">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

@@ -41,7 +41,7 @@ export default function Test () {
         if (questionError) {
           console.error("Error fetching questions:", questionError);
           return;
-        }else console.log(questions)
+        }
 
         const questionIds = questions.map((question: Question) => question.id);
 

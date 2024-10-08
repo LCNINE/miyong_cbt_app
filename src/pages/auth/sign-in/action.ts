@@ -10,8 +10,6 @@ export async function signIn({ values, setLoading }: signInProps) {
   setLoading(true);
 
   const { email, password } = values;
-  console.log('email : ' + email);
-  console.log('password : ' + password);
 
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -28,7 +26,6 @@ export async function signIn({ values, setLoading }: signInProps) {
       }
     }
 
-    console.log("Logged in successfully:", data);
     return { data };
   } catch (error) {
     console.error("Error during login:", error);

@@ -18,11 +18,11 @@ export default function Footer() {
     <div className="w-full border-t border-gray-200 flex">
       <Link to="/retest" className={linkClasses('/retest')}>
         <FaRedo className={iconClasses('/retest')} />
-        <span className="text-sm">다시보기</span>
+        <span className="text-sm text-black">다시보기</span>
       </Link>
       <Link to="/ai" className={linkClasses('/ai')}>
         <FaRobot className={iconClasses('/ai')} />
-        <span className="text-sm">AI</span>
+        <span className="text-sm text-black">AI</span>
       </Link>
     </div>
   );

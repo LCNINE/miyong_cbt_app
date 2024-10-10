@@ -131,6 +131,7 @@ export function ComboboxForm() {
                             "w-[200px] justify-between",
                             !field.value && "text-muted-foreground"
                           )}
+                          aria-label="항목 선택1(과목)"
                         >
                           {field.value || "Select license"}
                           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -193,6 +194,7 @@ export function ComboboxForm() {
                           "w-[200px] justify-between",
                           !field.value && "text-muted-foreground"
                         )}
+                        aria-label="항목 선택2(회차 및 년도)"
                       >
                         {field.value
                           ? episodesWithYears.find(
@@ -238,7 +240,7 @@ export function ComboboxForm() {
           />
         )}
 
-        <Button type="submit">문제 풀기</Button>
+        <Button type="submit" aria-label="문제를 풀기 위한 버튼">문제 풀기</Button>
       </form>
     </Form>
   );

@@ -106,7 +106,7 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
                   {options.map((option) => (
                     <li key={option.no}>
                       <label
-                        className={`block p-4 border rounded-lg cursor-pointer transition-colors ${
+                        className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
                           chose_option === option.no
                             ? chose_option === correct_option
                               ? "border-green-500 bg-green-100" // 맞춘 경우
@@ -122,7 +122,7 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
                           readOnly
                           className="hidden"
                         />
-                        {option.no}.{" "}
+                        <span className="mr-2">{option.no}. </span>
                         {option.type === "image" ? (
                           <>
                             {loadingImages[option.content] && (
@@ -135,9 +135,9 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
                               alt={`Option ${option.no}`}
                               className={cn(
                                 "max-w-full",
-                                loadingImages[option.content]
-                                  ? "hidden"
-                                  : "block"
+                                "max-h-10",
+                                loadingImages[option.content] ? "hidden" : "block",
+                                "ml-2" // 이미지와 번호 사이에 약간의 간격 추가
                               )}
                               onLoad={() => handleImageLoad(option.content)}
                             />

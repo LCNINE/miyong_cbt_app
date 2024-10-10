@@ -2,10 +2,15 @@ import { useLocation, useNavigate } from "react-router-dom"; // useNavigate 추�
 import { useEffect, useState } from "react";
 import { PostList } from "./PostList";
 import { Pagination } from "./Pagination";
-import { Example, Option, Question, QuestionWithExamplesAndOptions } from "@/type/testType"; // 타입 import
+import {
+  Example,
+  Option,
+  Question,
+  QuestionWithExamplesAndOptions,
+} from "@/type/testType"; // 타입 import
 import { supabase } from "@/lib/supabaseClient.ts";
 
-export default function Test () {
+export default function Test() {
   const location = useLocation();
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 사용
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,29 +19,33 @@ export default function Test () {
   const queryParams = new URLSearchParams(location.search);
   const test_id = Number(queryParams.get("test_id"));
 
-  const [questionData, setQuestionData] = useState<QuestionWithExamplesAndOptions[]>([]);
+  const [questionData, setQuestionData] = useState<
+    QuestionWithExamplesAndOptions[]
+  >([]);
   const [licenseName, setLicenseName] = useState<string | null>(null);
   const [licenseId, setLicenseId] = useState<number | null>(null);
   const [madeAt, setMadeAt] = useState<string | null>(null);
   const [episode, setEpisode] = useState<number | null>(null);
-  const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number | null }>({}); // 사용자가 선택한 답안 저장
+  const [selectedAnswers, setSelectedAnswers] = useState<{
+    [key: number]: number | null;
+  }>({}); // 사용자가 선택한 답안 저장
 
   // Supabase에서 데이터 가져오기
   useEffect(() => {
-
     const fetchQuestions = async () => {
       if (test_id) {
         const { data: questions, error: questionError } = await supabase
           .from("questions")
-          .select(`
+          .select(
+            `
             *,
             tests (
               episode
             )
-          `)
+          `
+          )
           .eq("test_id", test_id)
-          .order('no', { ascending: true });
-
+          .order("no", { ascending: true });
 
         if (questionError) {
           console.error("Error fetching questions:", questionError);
@@ -66,37 +75,40 @@ export default function Test () {
           return;
         }
 
-        const combinedData: QuestionWithExamplesAndOptions[] = questions.map((question: Question) => {
-          const questionExamples = examples.filter((example: Example) => example.question_id === question.id);
-          const questionOptions = options.filter((option: Option) => option.question_id === question.id);
+        const combinedData: QuestionWithExamplesAndOptions[] = questions.map(
+          (question: Question) => {
+            const questionExamples = examples.filter(
+              (example: Example) => example.question_id === question.id
+            );
+            const questionOptions = options.filter(
+              (option: Option) => option.question_id === question.id
+            );
 
-          return {
-            ...question,
-            examples: questionExamples,
-            options: questionOptions,
-          };
-        });
+            return {
+              ...question,
+              examples: questionExamples,
+              options: questionOptions,
+            };
+          }
+        );
 
         setQuestionData(combinedData);
 
-        
-        if(questions){
-          setLicenseId(questions[0].license)
-          setMadeAt(questions[0].made_at)
-          if(questions[0].tests) setEpisode(questions[0].tests.episode)
+        if (questions) {
+          setLicenseId(questions[0].license);
+          setMadeAt(questions[0].made_at);
+          if (questions[0].tests) setEpisode(questions[0].tests.episode);
         }
       }
     };
-
-    
 
     fetchQuestions();
   }, [test_id]);
 
   useEffect(() => {
     const fetchLicense = async () => {
-      if(licenseId){
-        const { data:license, error } = await supabase
+      if (licenseId) {
+        const { data: license, error } = await supabase
           .from("licenses")
           .select("license")
           .eq("id", licenseId)
@@ -111,10 +123,10 @@ export default function Test () {
           setLicenseName(license.license); // data에서 license를 추출
         }
       }
-    }
-    
+    };
+
     fetchLicense();
-  },[licenseId]);
+  }, [licenseId]);
 
   const firstPostIndex = (currentPage - 1) * postsPerPage;
   const lastPostIndex = firstPostIndex + postsPerPage;
@@ -149,7 +161,9 @@ export default function Test () {
 
   return (
     <div className="flex flex-col h-full">
-      <h1>{licenseName} : {episode}회({madeAt}) 모의고사</h1>
+      <div className="text-base text-gray-900">
+        {licenseName} : {episode}회({madeAt}) 모의고사
+      </div>
 
       <main className="flex-grow">
         <PostList
@@ -168,7 +182,7 @@ export default function Test () {
           postsPerPage={postsPerPage}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
-          handleSubmit={handleSubmit}  // handleSubmit을 Pagination에 전달
+          handleSubmit={handleSubmit} // handleSubmit을 Pagination에 전달
         />
       </footer>
 

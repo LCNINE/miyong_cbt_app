@@ -1,13 +1,13 @@
 // License 타입 정의
 export interface License {
-  id: number,
-  license: string
+  id: number;
+  license: string;
 }
 
 // MadeAt 타입 정의
 export interface MadeAt {
-  label: string,
-  value: string
+  label: string;
+  value: string;
 }
 
 export interface Question {
@@ -55,5 +55,5 @@ export interface reTestQustion {
   examples: Example[];
   options: Option[];
   chose_option: number | null;
-  correct_option:number | null;
+  correct_option: number | null;
 }

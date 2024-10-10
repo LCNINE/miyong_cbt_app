@@ -23,9 +23,7 @@ const router = createBrowserRouter([
       },
       {
         path: "test",
-        element: (
-          <Test />
-        ),
+        element: <Test />,
       },
       {
         path: "retest",
@@ -37,9 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "retest/afterTest",
-        element: (
-          <RetestAfterTest />
-        ),
+        element: <RetestAfterTest />,
       },
       {
         path: "ai",
@@ -51,9 +47,7 @@ const router = createBrowserRouter([
       },
       {
         path: "result",
-        element: (
-          <Result />
-        ),
+        element: <Result />,
       },
       {
         path: "sign-in",

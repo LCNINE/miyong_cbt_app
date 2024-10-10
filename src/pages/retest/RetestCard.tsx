@@ -136,7 +136,9 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
                               className={cn(
                                 "max-w-full",
                                 "max-h-10",
-                                loadingImages[option.content] ? "hidden" : "block",
+                                loadingImages[option.content]
+                                  ? "hidden"
+                                  : "block",
                                 "ml-2" // 이미지와 번호 사이에 약간의 간격 추가
                               )}
                               onLoad={() => handleImageLoad(option.content)}

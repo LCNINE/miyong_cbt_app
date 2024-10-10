@@ -47,10 +47,11 @@ export default function Header() {
       )}
 
       {/* 중앙의 제목 */}
-      <h1 className="absolute left-[-9999px]">미용 필기시험 준비를 위한 기출문제와 최신 정보</h1>
+      <h1 className="absolute left-[-9999px]">
+        미용 필기시험 준비를 위한 기출문제와 최신 정보
+      </h1>
       {/* <h1>미용필기시험</h1> */}
       <div className="text-2xl font-bold text-gray-900">미용필기시험</div>
-
 
       {!isTest && (
         <div className="text-right">

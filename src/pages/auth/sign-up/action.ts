@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { supabase } from "@/lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ interface signUpProps {
   navigate: ReturnType<typeof useNavigate>;
 }
 
-export async function signUp({ values, setLoading, navigate }: signUpProps){
+export async function signUp({ values, setLoading, navigate }: signUpProps) {
   setLoading(true);
   try {
     const { email, password } = values;
@@ -26,16 +26,14 @@ export async function signUp({ values, setLoading, navigate }: signUpProps){
 
     // 회원가입 성공 후 public.users 테이블에 데이터 추가
     if (data.user) {
-      const { error: insertError } = await supabase
-        .from('users')
-        .insert({
-          id: data.user.id,
-          name: null,
-          email: email,
-        });
+      const { error: insertError } = await supabase.from("users").insert({
+        id: data.user.id,
+        name: null,
+        email: email,
+      });
 
       if (insertError) throw insertError;
-        
+
       navigate("/");
     }
   } catch (error) {

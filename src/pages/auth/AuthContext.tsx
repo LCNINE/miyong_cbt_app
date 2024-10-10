@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast(); // useToast 훅을 통해 toast 사용
 
-
   useEffect(() => {
     const getSession = async () => {
       const { data, error } = await supabase.auth.getSession();
@@ -37,14 +36,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     getSession();
 
     // Supabase auth listener 설정
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
 
-      if (event === "SIGNED_OUT") {
-        <Navigate to='/sign-in' />// 로그아웃 시 로그인 페이지로 이동
+        if (event === "SIGNED_OUT") {
+          <Navigate to="/sign-in" />; // 로그아웃 시 로그인 페이지로 이동
+        }
       }
-    });
+    );
 
     return () => {
       authListener.subscription.unsubscribe();
@@ -59,7 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         title: "로그아웃",
         description: "로그아웃 되었습니다.",
       });
-      <Navigate to={'/'}/>
+      <Navigate to={"/"} />;
     } catch {
       toast({
         title: "로그인 실패",
@@ -70,7 +71,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, session, loading, signOut }}>
-      {!loading ? children : <div>Loading...</div>} {/* 로딩 중일 때 로딩 메시지 */}
+      {!loading ? children : <div>Loading...</div>}{" "}
+      {/* 로딩 중일 때 로딩 메시지 */}
     </AuthContext.Provider>
   );
 };

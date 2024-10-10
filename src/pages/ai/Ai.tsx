@@ -9,7 +9,9 @@ import { Button } from "@/components/ui/button";
 
 const Ai: React.FC = () => {
   const [isWaiting, setIsWaiting] = useState<boolean>(false);
-  const [messages, setMessages] = useState<Array<MessageDto>>(new Array<MessageDto>());
+  const [messages, setMessages] = useState<Array<MessageDto>>(
+    new Array<MessageDto>()
+  );
   const [input, setInput] = useState<string>("");
   const [assistant, setAssistant] = useState<any>(null);
   const [thread, setThread] = useState<any>(null);
@@ -85,12 +87,18 @@ const Ai: React.FC = () => {
 
     // Find the last message for the current run
     const lastMessage = messageList.data
-      .filter((message: any) => message.run_id === run.id && message.role === "assistant")
+      .filter(
+        (message: any) =>
+          message.run_id === run.id && message.role === "assistant"
+      )
       .pop();
 
     // Print the last message coming from the assistant
     if (lastMessage) {
-      setMessages([...messages, createNewMessage(lastMessage.content[0]["text"].value, false)]);
+      setMessages([
+        ...messages,
+        createNewMessage(lastMessage.content[0]["text"].value, false),
+      ]);
     }
   };
 
@@ -130,7 +138,11 @@ const Ai: React.FC = () => {
           onClick={handleSendMessage}
           disabled={isWaiting}
         >
-          {isWaiting ? <CircularProgress color="inherit" /> : <SendIcon fontSize="large" />}
+          {isWaiting ? (
+            <CircularProgress color="inherit" />
+          ) : (
+            <SendIcon fontSize="large" />
+          )}
         </Button>
       </div>
     </div>

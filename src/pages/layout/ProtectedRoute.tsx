@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   // 로그인하지 않은 경우
   if (!user) {
-    console.log('not logged in')
+    console.log("not logged in");
     return <Navigate to="/sign-in" replace />; // 로그인 페이지로 리디렉션
   }
 

@@ -10,12 +10,14 @@ export async function fetchIncorrectAnswers(userId: string | null) {
     if (error) {
       console.error("Error fetching incorrect answers:", error);
       return [];
-    }else{
+    } else {
       // 데이터를 변환하여 chose_answer를 selectedOption으로 변경
-      return data.map((item: { question_id: number; chose_answer: number | null }) => ({
-        questionId: item.question_id,
-        selectedOption: item.chose_answer,
-      }));
+      return data.map(
+        (item: { question_id: number; chose_answer: number | null }) => ({
+          questionId: item.question_id,
+          selectedOption: item.chose_answer,
+        })
+      );
     }
   }
 }

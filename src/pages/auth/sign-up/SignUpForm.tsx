@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -19,9 +26,9 @@ const SignUpForm = () => {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      email: '',      // 기본값 설정
-      password: '',   // 기본값 설정
-      confirmPassword: '',   // 기본값 설정
+      email: "", // 기본값 설정
+      password: "", // 기본값 설정
+      confirmPassword: "", // 기본값 설정
     },
   });
 
@@ -44,12 +51,15 @@ const SignUpForm = () => {
 
   function goBackToSignIn() {
     navigate("/sign-in"); // /sign-up으로 이동
-  };
+  }
 
   return (
     <div className="flex justify-center items-center h-full max-h-full">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(submitSignUp)} className="space-y-3 bg-white p-8 shadow-lg rounded-md max-w-sm w-full max-h-[90%]">
+        <form
+          onSubmit={form.handleSubmit(submitSignUp)}
+          className="space-y-3 bg-white p-8 shadow-lg rounded-md max-w-sm w-full max-h-[90%]"
+        >
           <h2 className="text-2xl font-semibold text-center">회원가입</h2>
 
           {/* Email 필드 */}
@@ -60,7 +70,11 @@ const SignUpForm = () => {
               <FormItem>
                 <FormLabel>이메일</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Enter your email" {...field} />
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -75,7 +89,11 @@ const SignUpForm = () => {
               <FormItem>
                 <FormLabel>비밀번호</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Enter your password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,7 +108,11 @@ const SignUpForm = () => {
               <FormItem>
                 <FormLabel>비밀번호 확인</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Confirm your password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Confirm your password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -102,16 +124,15 @@ const SignUpForm = () => {
             {loading ? "회원가입 중..." : "회원가입"}
           </Button>
 
-          <div className='my-4 flex flex-row items-center'>
-            <Separator className='flex-1' />
-            <p className='text-xs text-muted-foreground'>
-              계정이 있으신가요?
-            </p>
-            <Separator className='flex-1' />
+          <div className="my-4 flex flex-row items-center">
+            <Separator className="flex-1" />
+            <p className="text-xs text-muted-foreground">계정이 있으신가요?</p>
+            <Separator className="flex-1" />
           </div>
 
-          <Button onClick={goBackToSignIn} className="w-full">기존 계정으로 로그인</Button>
-
+          <Button onClick={goBackToSignIn} className="w-full">
+            기존 계정으로 로그인
+          </Button>
         </form>
       </Form>
     </div>

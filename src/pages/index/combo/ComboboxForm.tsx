@@ -51,10 +51,16 @@ export function ComboboxForm() {
     },
   });
 
-  const { data: tests, isLoading: testsLoading, error: testsError } = useTests();
+  const {
+    data: tests,
+    isLoading: testsLoading,
+    error: testsError,
+  } = useTests();
   if (testsError) {
     console.error("Error loading tests:", testsError);
-    navigate('/error', { state: { message: `Error loading tests: ${testsError}` } });
+    navigate("/error", {
+      state: { message: `Error loading tests: ${testsError}` },
+    });
   }
 
   // 라이센스 목록 메모이제이션
@@ -240,7 +246,9 @@ export function ComboboxForm() {
           />
         )}
 
-        <Button type="submit" aria-label="문제를 풀기 위한 버튼">문제 풀기</Button>
+        <Button type="submit" aria-label="문제를 풀기 위한 버튼">
+          문제 풀기
+        </Button>
       </form>
     </Form>
   );

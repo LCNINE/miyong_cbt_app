@@ -7,14 +7,14 @@ export default function SignIn() {
 
   function handleSignUp() {
     navigate("/sign-up"); // /sign-up으로 이동
-  };
+  }
 
   return (
     <div className="h-full flex flex-col justify-center">
-      <SignInForm/>
+      <SignInForm />
       <div className="text-center mt-5">
         <Button onClick={handleSignUp}>회원가입</Button>
       </div>
     </div>
-  )
+  );
 }

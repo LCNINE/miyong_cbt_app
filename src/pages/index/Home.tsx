@@ -2,7 +2,7 @@ import { ComboboxForm } from "./combo/ComboboxForm";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center h- min-h-[75vh] justify-center bg-white relative">
+    <div className="flex flex-col items-center h-full justify-center bg-white relative">
       <div className="flex items-center justify-center flex-1 h-full w-full">
         <ComboboxForm />
       </div>

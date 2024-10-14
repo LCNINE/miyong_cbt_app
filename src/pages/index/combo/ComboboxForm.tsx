@@ -27,6 +27,8 @@ import {
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import useTests from "./hook/useTests";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 // 폼 스키마 정의
 const FormSchema = z.object({
@@ -88,19 +90,16 @@ export function ComboboxForm() {
 
   // 기본적으로 첫 번째 라이센스 선택하게 설정
   useEffect(() => {
-    requestAnimationFrame(() => {
-      if (licenses.length > 0 && !selectedLicense) {
-        form.setValue("license", licenses[0]);
-      }});
+    if (licenses.length > 0 && !selectedLicense) {
+      form.setValue("license", licenses[0]);
+    }
   }, [licenses, form, selectedLicense]);
 
   // 기본적으로 첫 번째 회차/년도 선택하게 설정
   useEffect(() => {
-    requestAnimationFrame(() => {
-      if (episodesWithYears.length > 0) {
-        form.setValue("episodeWithYear", episodesWithYears[0].value);
-      }
-    })
+    if (episodesWithYears.length > 0) {
+      form.setValue("episodeWithYear", episodesWithYears[0].value);
+    }
   }, [episodesWithYears, form]);
 
   const onSubmit = () => {

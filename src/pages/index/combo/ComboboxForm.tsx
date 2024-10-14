@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +29,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useTests from "./hook/useTests";
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import { supabase } from "@/lib/supabaseClient";
+
 
 // 폼 스키마 정의
 const FormSchema = z.object({
@@ -45,6 +45,8 @@ export function ComboboxForm() {
   const navigate = useNavigate();
   const [licensePopoverOpen, setLicensePopoverOpen] = useState(false);
   const [episodePopoverOpen, setEpisodePopoverOpen] = useState(false);
+  const location = useLocation();
+  const previousPath = useRef(location.pathname); // 이전 경로를 저장하는 ref
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -54,40 +56,6 @@ export function ComboboxForm() {
     },
   });
 
-  // 로그 데이터를 Supabase에 저장하는 함수
-  async function sendLogToSupabase(logMessage: string) {
-    const { data, error } = await supabase
-      .from('logs')
-      .insert([{ message: logMessage }]);
-
-    if (error) {
-      console.error('Error inserting log:', error);
-    } else {
-      console.log('Log inserted:', data);
-    }
-  }
-
-  // window.onerror 핸들러 추가
-  useEffect(() => {
-    const originalOnError = window.onerror;
-
-    window.onerror = function (message, source, lineno, colno, error) {
-      const logMessage = `
-        Message: ${message}
-        Source: ${source}
-        Line: ${lineno}
-        Column: ${colno}
-        Error Object: ${JSON.stringify(error)}
-      `;
-      sendLogToSupabase(logMessage);
-      return false; // 기본 오류 처리를 막지 않음
-    };
-
-    return () => {
-      window.onerror = originalOnError; // 컴포넌트가 언마운트되면 핸들러 원복
-    };
-  }, []);
-
   const {
     data: tests,
     isLoading: testsLoading,
@@ -95,7 +63,6 @@ export function ComboboxForm() {
   } = useTests();
   if (testsError) {
     console.error("Error loading tests:", testsError);
-    sendLogToSupabase(`Error loading tests: ${testsError}`);
     navigate("/error", {
       state: { message: `Error loading tests: ${testsError}` },
     });
@@ -124,12 +91,25 @@ export function ComboboxForm() {
     });
   }, [filteredTests]);
 
+  useEffect(() => {
+    // 특정 페이지에서 돌아왔는지 확인 (예시: '/previous-page'에서 다시 돌아왔을 때)
+    if (previousPath.current === '/previous-page' && location.pathname === '/current-page') {
+      window.location.reload(); // 강제 새로고침 (캐시 무효화)
+    }
+
+    // 이전 경로 업데이트
+    previousPath.current = location.pathname;
+  }, [location]);
+
   // 기본적으로 첫 번째 라이센스 선택하게 설정
   useEffect(() => {
-    if (licenses.length > 0 && !selectedLicense) {
-      form.setValue("license", licenses[0]);
+    if (licenses.length > 0) {
+      const defaultLicense = licenses[0];
+      if (!selectedLicense) {
+        form.setValue("license", defaultLicense);
+      }
     }
-  }, [licenses, form, selectedLicense]);
+  }, [licenses]); // selectedLicense와 form을 의존성에서 제거
 
   // 기본적으로 첫 번째 회차/년도 선택하게 설정
   useEffect(() => {

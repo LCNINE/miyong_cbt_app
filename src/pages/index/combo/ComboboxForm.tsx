@@ -100,6 +100,14 @@ export function ComboboxForm() {
     }
   }, [episodesWithYears, form]);
 
+  // 페이지를 처음 로드하거나 다른 페이지에서 돌아올 때 상태 초기화
+  useEffect(() => {
+    form.reset({
+      license: licenses[0] || "", // licenses 배열이 비어 있을 경우 빈 값 설정
+      episodeWithYear: episodesWithYears.length > 0 ? episodesWithYears[0].value : "", // 회차/년도가 있을 경우 첫 번째 값 선택
+    });
+  }, [licenses, episodesWithYears, form]);
+
   const onSubmit = () => {
     const selectedTestId = form.watch("episodeWithYear");
 

@@ -9,6 +9,7 @@ import {
   QuestionWithExamplesAndOptions,
 } from "@/type/testType"; // 타입 import
 import { supabase } from "@/lib/supabaseClient.ts";
+import { Helmet } from "react-helmet-async";
 
 export default function Test() {
   const location = useLocation();
@@ -161,6 +162,12 @@ export default function Test() {
 
   return (
     <div className="flex flex-col h-full">
+      <Helmet>
+        <title>미용필시시험/test - 미용필기시험 모의고사</title>
+        <meta name="description" content="미용필기시험 모의고사" />
+        <meta name="google-site-verification" content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" />
+        <meta name="naver-site-verification" content="dd4919f9da4dfbafdd79f35ed97505cf41418c50" />
+      </Helmet>
       <div className="text-base text-gray-900">
         {licenseName} : {episode}회({madeAt}) 모의고사
       </div>

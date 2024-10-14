@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabaseClient";
 import { incorrectAnswer } from "@/type/testType";
+import { Helmet } from "react-helmet-async";
 
 export default function Result() {
   const location = useLocation();
@@ -73,6 +74,12 @@ export default function Result() {
 
   return (
     <div className="h-full flex items-center justify-center bg-white">
+      <Helmet>
+        <title>미용필시시험/test - 미용필기시험 시험결과</title>
+        <meta name="description" content="미용필기시험 시험결과" />
+        <meta name="google-site-verification" content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" />
+        <meta name="naver-site-verification" content="dd4919f9da4dfbafdd79f35ed97505cf41418c50" />
+      </Helmet>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

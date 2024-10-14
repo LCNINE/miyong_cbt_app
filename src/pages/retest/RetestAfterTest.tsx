@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { fetchQuestionsAndOptions } from "./fetch";
+import { Helmet } from "react-helmet-async";
 
 export default function RetestAfterTest() {
   const location = useLocation();
@@ -83,5 +84,15 @@ export default function RetestAfterTest() {
     return <div>Error loading data.</div>;
   }
 
-  return <RetestCard answersToRetest={questionData} />;
+  return (
+    <>
+      <Helmet>
+        <title>미용필시시험/retest - 미용필기시험 오답노트</title>
+        <meta name="description" content="미용필기시험 오답노트" />
+        <meta name="google-site-verification" content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" />
+        <meta name="naver-site-verification" content="dd4919f9da4dfbafdd79f35ed97505cf41418c50" />
+      </Helmet>
+      <RetestCard answersToRetest={questionData} />
+    </>
+  );
 }

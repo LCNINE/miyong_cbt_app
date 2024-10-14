@@ -27,6 +27,8 @@ import {
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import useTests from "./hook/useTests";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 // 폼 스키마 정의
 const FormSchema = z.object({

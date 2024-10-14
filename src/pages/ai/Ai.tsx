@@ -6,6 +6,7 @@ import Message from "./Message";
 import { MessageDto } from "./MessageDto";
 import TypingIndicator from "./TypingIndicator";
 import { Button } from "@/components/ui/button";
+import { Helmet } from "react-helmet-async";
 
 const Ai: React.FC = () => {
   const [isWaiting, setIsWaiting] = useState<boolean>(false);
@@ -116,42 +117,50 @@ const Ai: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-auto p-4">
-        {messages.map((message, index) => (
-          <div key={index}>
-            <Message key={index} message={message} />
-          </div>
-        ))}
-        {isWaiting && (
-          <div>
-            <TypingIndicator />
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-center p-4 border-t">
-        <input
-          type="text"
-          className="flex-1 border rounded-lg p-2 mr-2"
-          disabled={isWaiting}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyPress}
-        />
-        <Button
-          color="primary"
-          onClick={handleSendMessage}
-          disabled={isWaiting}
-        >
-          {isWaiting ? (
-            <CircularProgress color="inherit" />
-          ) : (
-            <SendIcon fontSize="large" />
+    <>
+      <Helmet>
+        <title>미용필시시험Ai - customgpt를 이용한 즉각적인 ai 피드백</title>
+        <meta name="description" content="customgpt를 이용한 즉각적인 ai 피드백" />
+        <meta name="google-site-verification" content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" />
+        <meta name="naver-site-verification" content="dd4919f9da4dfbafdd79f35ed97505cf41418c50" />
+      </Helmet>
+      <div className="flex flex-col h-full">
+        <div className="flex-1 overflow-auto p-4">
+          {messages.map((message, index) => (
+            <div key={index}>
+              <Message key={index} message={message} />
+            </div>
+          ))}
+          {isWaiting && (
+            <div>
+              <TypingIndicator />
+            </div>
           )}
-        </Button>
+        </div>
+
+        <div className="flex items-center p-4 border-t">
+          <input
+            type="text"
+            className="flex-1 border rounded-lg p-2 mr-2"
+            disabled={isWaiting}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyPress}
+          />
+          <Button
+            color="primary"
+            onClick={handleSendMessage}
+            disabled={isWaiting}
+          >
+            {isWaiting ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              <SendIcon fontSize="large" />
+            )}
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

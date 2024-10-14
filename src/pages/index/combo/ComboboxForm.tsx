@@ -29,6 +29,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useTests from "./hook/useTests";
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import { supabase } from "@/lib/supabaseClient";
 
 // 폼 스키마 정의
 const FormSchema = z.object({
@@ -53,6 +54,40 @@ export function ComboboxForm() {
     },
   });
 
+  // 로그 데이터를 Supabase에 저장하는 함수
+  async function sendLogToSupabase(logMessage: string) {
+    const { data, error } = await supabase
+      .from('logs')
+      .insert([{ message: logMessage }]);
+
+    if (error) {
+      console.error('Error inserting log:', error);
+    } else {
+      console.log('Log inserted:', data);
+    }
+  }
+
+  // window.onerror 핸들러 추가
+  useEffect(() => {
+    const originalOnError = window.onerror;
+
+    window.onerror = function (message, source, lineno, colno, error) {
+      const logMessage = `
+        Message: ${message}
+        Source: ${source}
+        Line: ${lineno}
+        Column: ${colno}
+        Error Object: ${JSON.stringify(error)}
+      `;
+      sendLogToSupabase(logMessage);
+      return false; // 기본 오류 처리를 막지 않음
+    };
+
+    return () => {
+      window.onerror = originalOnError; // 컴포넌트가 언마운트되면 핸들러 원복
+    };
+  }, []);
+
   const {
     data: tests,
     isLoading: testsLoading,
@@ -60,6 +95,7 @@ export function ComboboxForm() {
   } = useTests();
   if (testsError) {
     console.error("Error loading tests:", testsError);
+    sendLogToSupabase(`Error loading tests: ${testsError}`);
     navigate("/error", {
       state: { message: `Error loading tests: ${testsError}` },
     });

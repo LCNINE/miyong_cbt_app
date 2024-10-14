@@ -15,6 +15,7 @@ export default function Header() {
     if (isTest) {
       const confirmExit = window.confirm("정말 시험을 포기하시겠습니까?");
       if (!confirmExit) {
+        navigate('/');
         return; // 사용자가 "취소"를 누르면 함수가 여기서 종료됨
       }
     }

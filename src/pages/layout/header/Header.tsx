@@ -53,7 +53,15 @@ export default function Header() {
       </h1>
       {/* <h1>미용필기시험</h1> */}
       <div className="text-xl font-bold text-gray-900 xs:tracking-tight xs:text-base xs:font-semibold">
-        미용필기시험
+        {isTest ?
+          <div className="text-xl font-bold text-gray-900 xs:tracking-tight xs:text-base xs:font-semibold">
+            미용필기시험
+          </div>
+          :
+          <button onClick={goBack}>
+            미용필기시험
+          </button>
+        }
       </div>
 
       {!isTest && (

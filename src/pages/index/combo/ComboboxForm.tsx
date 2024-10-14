@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,19 +42,6 @@ export function ComboboxForm() {
   const navigate = useNavigate();
   const [licensePopoverOpen, setLicensePopoverOpen] = useState(false);
   const [episodePopoverOpen, setEpisodePopoverOpen] = useState(false);
-
-  const location = useLocation();
-  const previousPath = useRef(location.pathname); // 이전 경로를 저장하는 ref
-
-  useEffect(() => {
-    // 특정 페이지에서 돌아왔는지 확인 (예시: '/previous-page'에서 다시 돌아왔을 때)
-    if (previousPath.current === '/previous-page' && location.pathname === '/current-page') {
-      window.location.reload(); // 강제 새로고침 (캐시 무효화)
-    }
-
-    // 이전 경로 업데이트
-    previousPath.current = location.pathname;
-  }, [location]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

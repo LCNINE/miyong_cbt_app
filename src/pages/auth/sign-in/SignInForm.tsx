@@ -32,17 +32,28 @@ export default function SignInForm() {
 
   const submitSignIn = async (values: SignInFormValues) => {
     try {
-      await signIn({ values, setLoading });
-      // 회원가입 성공 시 toast 메시지 출력
+      const { data, error } = await signIn({ values, setLoading });
+  
+      if (error) {
+        // 로그인 실패 시 toast 메시지 출력
+        toast({
+          title: "로그인 실패",
+          description: "존재하지 않는 계정입니다.",
+        });
+        return; // 실패 시 더 이상 진행하지 않음
+      }
+  
+      // 로그인 성공 시 toast 메시지 출력
       toast({
         title: "로그인 성공",
-        description: "환영합니다!",
+        description: data?.user.email + "님 환영합니다!",
       });
+  
       navigate("/"); // 로그인 성공 시 메인 페이지로 이동
     } catch {
       toast({
         title: "로그인 실패",
-        description: "아이다 혹은 비밀번호를 확인해 주세요.",
+        description: "로그인 중 문제가 발생했습니다.",
       });
     }
   };

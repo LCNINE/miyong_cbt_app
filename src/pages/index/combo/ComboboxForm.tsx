@@ -88,25 +88,20 @@ export function ComboboxForm() {
 
   // 기본적으로 첫 번째 라이센스 선택하게 설정
   useEffect(() => {
-    if (licenses.length > 0 && !selectedLicense) {
-      form.setValue("license", licenses[0]);
-    }
+    requestAnimationFrame(() => {
+      if (licenses.length > 0 && !selectedLicense) {
+        form.setValue("license", licenses[0]);
+      }});
   }, [licenses, form, selectedLicense]);
 
   // 기본적으로 첫 번째 회차/년도 선택하게 설정
   useEffect(() => {
-    if (episodesWithYears.length > 0) {
-      form.setValue("episodeWithYear", episodesWithYears[0].value);
-    }
+    requestAnimationFrame(() => {
+      if (episodesWithYears.length > 0) {
+        form.setValue("episodeWithYear", episodesWithYears[0].value);
+      }
+    })
   }, [episodesWithYears, form]);
-
-  // 페이지를 처음 로드하거나 다른 페이지에서 돌아올 때 상태 초기화
-  useEffect(() => {
-    form.reset({
-      license: licenses[0] || "", // licenses 배열이 비어 있을 경우 빈 값 설정
-      episodeWithYear: episodesWithYears.length > 0 ? episodesWithYears[0].value : "", // 회차/년도가 있을 경우 첫 번째 값 선택
-    });
-  }, [licenses, episodesWithYears, form]);
 
   const onSubmit = () => {
     const selectedTestId = form.watch("episodeWithYear");

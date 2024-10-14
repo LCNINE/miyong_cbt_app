@@ -53,6 +53,10 @@ const Ai: React.FC = () => {
     return newMessage;
   };
 
+  const removeReferences = (text: string) => {
+    return text.replace(/【[^】]+】/g, '');
+  };
+
   const handleSendMessage = async () => {
     messages.push(createNewMessage(input, true));
     setMessages([...messages]);
@@ -93,11 +97,13 @@ const Ai: React.FC = () => {
       )
       .pop();
 
-    // Print the last message coming from the assistant
+      // Print the last message coming from the assistant
     if (lastMessage) {
+      // 응답에서 참조를 제거한 후 메시지로 설정
+      const cleanedMessage = removeReferences(lastMessage.content[0]["text"].value);
       setMessages([
         ...messages,
-        createNewMessage(lastMessage.content[0]["text"].value, false),
+        createNewMessage(cleanedMessage, false),
       ]);
     }
   };

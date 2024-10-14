@@ -8,5 +8,8 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')  // '@'를 'src'로 매핑
     }
+  },
+  build: {
+    minify: false,  // minify 해제
   }
 });

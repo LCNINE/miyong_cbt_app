@@ -35,7 +35,7 @@ export default function Header() {
   }
 
   function handleSignIn() {
-    navigate("/sign-in");
+    navigate("/sign-in", { state: { from: location } });
   }
 
   return (

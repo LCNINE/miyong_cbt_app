@@ -11,6 +11,7 @@ import ProtectedRoute from "./pages/layout/ProtectedRoute";
 import Result from "./pages/test/Result";
 import RetestAfterTest from "./pages/retest/RetestAfterTest";
 import { ToastProvider } from "./components/ui/toast";
+import ProtectedRouteForSampleAi from "./pages/layout/ProtectedRouteSampleAi";
 
 const router = createBrowserRouter([
   {
@@ -40,9 +41,9 @@ const router = createBrowserRouter([
       {
         path: "ai",
         element: (
-          <ProtectedRoute>
+          <ProtectedRouteForSampleAi>
             <Ai />
-          </ProtectedRoute>
+          </ProtectedRouteForSampleAi>
         ),
       },
       {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { CircularProgress } from "@mui/material";
 import OpenAI from "openai";
 import SendIcon from "@mui/icons-material/Send";
@@ -17,6 +17,7 @@ const Ai: React.FC = () => {
   const [assistant, setAssistant] = useState<any>(null);
   const [thread, setThread] = useState<any>(null);
   const [openai, setOpenai] = useState<any>(null);
+  const messageEndRef = useRef<HTMLDivElement | null>(null); // 스크롤을 위한 ref 추가
 
   useEffect(() => {
     initChatBot();
@@ -30,6 +31,15 @@ const Ai: React.FC = () => {
       },
     ]);
   }, [assistant]);
+
+  // 스크롤을 맨 아래로 내리는 함수
+  const scrollToBottom = () => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom(); // 메시지가 추가될 때마다 스크롤을 최하단으로 이동
+  }, [messages]);
 
   const initChatBot = async () => {
     const openai = new OpenAI({
@@ -55,7 +65,7 @@ const Ai: React.FC = () => {
   };
 
   const removeReferences = (text: string) => {
-    return text.replace(/【[^】]+】/g, '');
+    return text.replace(/【[^】]+】/g, "");
   };
 
   const handleSendMessage = async () => {
@@ -98,14 +108,13 @@ const Ai: React.FC = () => {
       )
       .pop();
 
-      // Print the last message coming from the assistant
+    // Print the last message coming from the assistant
     if (lastMessage) {
       // 응답에서 참조를 제거한 후 메시지로 설정
-      const cleanedMessage = removeReferences(lastMessage.content[0]["text"].value);
-      setMessages([
-        ...messages,
-        createNewMessage(cleanedMessage, false),
-      ]);
+      const cleanedMessage = removeReferences(
+        lastMessage.content[0]["text"].value
+      );
+      setMessages([...messages, createNewMessage(cleanedMessage, false)]);
     }
   };
 
@@ -120,9 +129,18 @@ const Ai: React.FC = () => {
     <>
       <Helmet>
         <title>미용필시시험Ai - customgpt를 이용한 즉각적인 ai 피드백</title>
-        <meta name="description" content="customgpt를 이용한 즉각적인 ai 피드백" />
-        <meta name="google-site-verification" content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" />
-        <meta name="naver-site-verification" content="dd4919f9da4dfbafdd79f35ed97505cf41418c50" />
+        <meta
+          name="description"
+          content="customgpt를 이용한 즉각적인 ai 피드백"
+        />
+        <meta
+          name="google-site-verification"
+          content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI"
+        />
+        <meta
+          name="naver-site-verification"
+          content="dd4919f9da4dfbafdd79f35ed97505cf41418c50"
+        />
       </Helmet>
       <div className="flex flex-col h-full">
         <div className="flex-1 overflow-auto p-4">
@@ -136,6 +154,8 @@ const Ai: React.FC = () => {
               <TypingIndicator />
             </div>
           )}
+          {/* 메시지 목록 끝에 있는 ref */}
+          <div ref={messageEndRef} />
         </div>
 
         <div className="flex items-center p-4 border-t">

@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Layout from "./pages/layout/Layout";
 import Home from "./pages/index/Home";
 import Test from "./pages/test/Test";
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
       },
       {
         path: "test",
+        element: <Navigate to="/test/1" replace={true} />, // /test로 접근 시 /test/1로 리디렉션
+      },
+      {
+        path: "test/:test_id",
         element: <Test />,
       },
       {

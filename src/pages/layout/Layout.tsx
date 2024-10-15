@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./header/Header"; // Header 컴포넌트 import
 import Footer from "./footer/Footer"; // Footer 컴포넌트 import
-import { Outlet, useLocation } from "react-router-dom";
+import { matchPath, Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 
 // Props 타입 정의
@@ -15,7 +15,7 @@ const Layout = () => {
   const location = useLocation();
 
   // 특정 경로에서는 Header만 보여주기 위한 조건
-  const isTestRoute = location.pathname === "/test";
+  const isTestRoute = matchPath("/test/:test_id", location.pathname);
 
   return (
     <div className="max-w-screen-md h-screen max-h-screen flex flex-col mx-auto shadow-md">

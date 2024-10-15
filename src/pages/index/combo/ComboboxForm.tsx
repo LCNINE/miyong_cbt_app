@@ -110,7 +110,7 @@ export function ComboboxForm() {
       return;
     }
 
-    navigate(`/test?test_id=${selectedTestId}`);
+    navigate(`/test/${selectedTestId}`);
   };
 
   return (

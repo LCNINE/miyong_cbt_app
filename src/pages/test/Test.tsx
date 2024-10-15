@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
+import { useNavigate, useParams } from "react-router-dom"; // useNavigate 추가
 import { useEffect, useState } from "react";
 import { PostList } from "./PostList";
 import { Pagination } from "./Pagination";
@@ -12,13 +12,10 @@ import { supabase } from "@/lib/supabaseClient.ts";
 import { Helmet } from "react-helmet-async";
 
 export default function Test() {
-  const location = useLocation();
+  const { test_id } = useParams(); // 경로 파라미터로 test_id 가져오기
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 사용
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 1;
-
-  const queryParams = new URLSearchParams(location.search);
-  const test_id = Number(queryParams.get("test_id"));
 
   const [questionData, setQuestionData] = useState<
     QuestionWithExamplesAndOptions[]

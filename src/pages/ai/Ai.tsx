@@ -141,6 +141,10 @@ const Ai: React.FC = () => {
           name="naver-site-verification"
           content="dd4919f9da4dfbafdd79f35ed97505cf41418c50"
         />
+        <link
+          rel="canonical"
+          href="https://www.xn--ok0b94xilff7df2wpza.com/ai"
+        />
       </Helmet>
       <div className="flex flex-col h-full">
         <div className="flex-1 overflow-auto p-4">

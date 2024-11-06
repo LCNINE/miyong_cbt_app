@@ -39,7 +39,11 @@ export async function signUp({ values, setLoading, navigate }: signUpProps) {
   } catch (error) {
     // 에러 타입을 AuthError 또는 PostgrestError로 처리
     if (error instanceof AuthError) {
-      alert(`Auth error: ${error.message}`);
+      if (error.message == 'User already registered') {
+        return 'User already registered';
+      } else {
+        return `Auth error: ${error.message}`;
+      }
     } else {
       alert(`Database error: ${(error as Error).message}`);
       console.error("Unexpected error:", error);
@@ -47,5 +51,5 @@ export async function signUp({ values, setLoading, navigate }: signUpProps) {
   } finally {
     setLoading(false);
   }
-  return null;
+  return 'success';
 }

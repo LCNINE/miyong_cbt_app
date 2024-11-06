@@ -35,12 +35,25 @@ const SignUpForm = () => {
   const submitSignUp = async (values: SignUpFormValues) => {
     // onSubmit 로직을 SignUpHandler로 전달
     try {
-      await signUp({ values, setLoading, navigate });
-      // 회원가입 성공 시 toast 메시지 출력
-      toast({
-        title: "회원가입 성공",
-        description: "환영합니다! 회원가입이 완료되었습니다.",
-      });
+      const signUpResult = await signUp({ values, setLoading, navigate });
+      if (signUpResult == 'success') {
+        // 회원가입 성공 시 toast 메시지 출력
+        toast({
+          title: "회원가입 성공",
+          description: "환영합니다! 회원가입이 완료되었습니다.",
+        });
+      }else if (signUpResult == 'User already registered') {
+        // 회원가입 성공 시 toast 메시지 출력
+        toast({
+          title: "회원가입 실패",
+          description: "이미 존재하는 회원입니다.",
+        });
+      }else{
+        toast({
+          title: "회원가입 실패",
+          description: "회원가입 중 문제가 발생했습니다. 다시 시도해주세요.",
+        });
+      }
     } catch {
       toast({
         title: "회원가입 실패",

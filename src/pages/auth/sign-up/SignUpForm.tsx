@@ -53,6 +53,7 @@ const SignUpForm = () => {
           title: "회원가입 실패",
           description: "회원가입 중 문제가 발생했습니다. 다시 시도해주세요.",
         });
+        console.log(`Database error: ${(signUpResult)}`)
       }
     } catch {
       toast({

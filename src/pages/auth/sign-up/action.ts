@@ -45,8 +45,7 @@ export async function signUp({ values, setLoading, navigate }: signUpProps) {
         return `Auth error: ${error.message}`;
       }
     } else {
-      alert(`Database error: ${(error as Error).message}`);
-      console.error("Unexpected error:", error);
+      return `Database error: ${(error as Error).message}`;
     }
   } finally {
     setLoading(false);

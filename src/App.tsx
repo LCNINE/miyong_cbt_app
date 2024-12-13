@@ -12,6 +12,7 @@ import Result from "./pages/test/Result";
 import RetestAfterTest from "./pages/retest/RetestAfterTest";
 import { ToastProvider } from "./components/ui/toast";
 import ProtectedRouteForSampleAi from "./pages/layout/ProtectedRouteSampleAi";
+import Schedule from "./pages/schedule/Schedule";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "sign-up",
         element: <SignUp />,
+      },
+      {
+        path: "schedule",
+        element: <Schedule />,
       },
     ],
   },

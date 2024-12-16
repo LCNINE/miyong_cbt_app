@@ -1,10 +1,17 @@
 // src/pages/schedule/Calendar.tsx
-import React, { useState, useEffect } from 'react';
-import { getDaysInMonth, isSameDayAsDate } from './utils';
-import { CalendarEvent, ExamSchedule } from './types';
-import { subMonths, addMonths, format, isBefore, isAfter, parseISO } from 'date-fns';
-import CalendarDay from './CalendarDay';
-import { supabase } from '@/lib/supabaseClient';
+import React, { useState, useEffect } from "react";
+import { getDaysInMonth, isSameDayAsDate } from "./utils";
+import { CalendarEvent, ExamSchedule } from "./types";
+import {
+  subMonths,
+  addMonths,
+  format,
+  isBefore,
+  isAfter,
+  parseISO,
+} from "date-fns";
+import CalendarDay from "./CalendarDay";
+import { supabase } from "@/lib/supabaseClient";
 
 const Calendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -19,16 +26,16 @@ const Calendar: React.FC = () => {
     const fetchSchedules = async () => {
       try {
         const { data, error } = await supabase
-          .from('exam_schedules')
-          .select('*')
-          .order('exam_type, exam_round, application_starts_at');
+          .from("exam_schedules")
+          .select("*")
+          .order("exam_type, exam_round, application_starts_at");
         if (error) {
-          console.error('스케줄을 가져오는 중 오류 발생:', error);
+          console.error("스케줄을 가져오는 중 오류 발생:", error);
           return;
         }
         setExamSchedules(data as ExamSchedule[]);
       } catch (error) {
-        console.error('스케줄을 가져오는 중 예외 발생:', error);
+        console.error("스케줄을 가져오는 중 예외 발생:", error);
       }
     };
 
@@ -43,7 +50,7 @@ const Calendar: React.FC = () => {
 
     // Step 1: 현재 월과 겹치는 이벤트만 필터링
     const allEvents: CalendarEvent[] = [];
-    examSchedules.forEach(schedule => {
+    examSchedules.forEach((schedule) => {
       const applicationStart = parseISO(schedule.application_starts_at);
       const applicationEnd = parseISO(schedule.application_ends_at);
       const examStart = parseISO(schedule.starts_at);
@@ -51,7 +58,8 @@ const Calendar: React.FC = () => {
 
       // 현재 월과 겹치는지 확인
       if (
-        (isBefore(applicationStart, endOfMonth) && isAfter(applicationEnd, startOfMonth)) ||
+        (isBefore(applicationStart, endOfMonth) &&
+          isAfter(applicationEnd, startOfMonth)) ||
         (isBefore(examStart, endOfMonth) && isAfter(examEnd, startOfMonth))
       ) {
         // 접수 이벤트
@@ -61,20 +69,18 @@ const Calendar: React.FC = () => {
         ) {
           allEvents.push({
             id: schedule.id,
-            start: applicationStart < startOfMonth ? startOfMonth : applicationStart,
+            start:
+              applicationStart < startOfMonth ? startOfMonth : applicationStart,
             end: applicationEnd > endOfMonth ? endOfMonth : applicationEnd,
             type: schedule.exam_type,
             application: true,
             round: schedule.exam_round,
-            slot: -1
+            slot: -1,
           });
         }
 
         // 시험 이벤트
-        if (
-          isBefore(examStart, endOfMonth) &&
-          isAfter(examEnd, startOfMonth)
-        ) {
+        if (isBefore(examStart, endOfMonth) && isAfter(examEnd, startOfMonth)) {
           allEvents.push({
             id: schedule.id,
             start: examStart < startOfMonth ? startOfMonth : examStart,
@@ -82,7 +88,7 @@ const Calendar: React.FC = () => {
             type: schedule.exam_type,
             application: false,
             round: schedule.exam_round,
-            slot: -1
+            slot: -1,
           });
         }
       }
@@ -106,7 +112,7 @@ const Calendar: React.FC = () => {
       }
 
       // 3. 시험 타입 우선순위 ("필기" 먼저)
-      const typeOrder = { "필기": 0, "실기": 1 };
+      const typeOrder = { 필기: 0, 실기: 1 };
       return typeOrder[a.type] - typeOrder[b.type];
     });
 
@@ -114,7 +120,7 @@ const Calendar: React.FC = () => {
     // const assignedSlots: { [key: number]: number } = {}; // event.id -> slot
     const activeEvents: CalendarEvent[] = [];
 
-    allEvents.forEach(event => {
+    allEvents.forEach((event) => {
       // 현재 이벤트 시작 전에 끝난 이벤트는 activeEvents에서 제거
       for (let i = activeEvents.length - 1; i >= 0; i--) {
         if (activeEvents[i].end < event.start) {
@@ -123,7 +129,7 @@ const Calendar: React.FC = () => {
       }
 
       // 현재 사용 중인 슬롯 확인
-      const usedSlots = activeEvents.map(activeEvent => activeEvent.slot);
+      const usedSlots = activeEvents.map((activeEvent) => activeEvent.slot);
 
       // 사용 가능한 가장 작은 슬롯 찾기
       let availableSlot = -1;
@@ -160,21 +166,50 @@ const Calendar: React.FC = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <button onClick={handlePrevMonth} className="bg-gray-200 px-2 py-1 rounded">&lt;</button>
-        <h2 className="text-xl font-bold">{format(currentDate, 'yyyy년 MM월')}</h2>
-        <button onClick={handleNextMonth} className="bg-gray-200 px-2 py-1 rounded">&gt;</button>
+        <button
+          onClick={handlePrevMonth}
+          className="bg-gray-200 px-2 py-1 rounded"
+        >
+          &lt;
+        </button>
+        <h2 className="text-xl font-bold">
+          {format(currentDate, "yyyy년 MM월")}
+        </h2>
+        <button
+          onClick={handleNextMonth}
+          className="bg-gray-200 px-2 py-1 rounded"
+        >
+          &gt;
+        </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1">
-        {['일', '월', '화', '수', '목', '금', '토'].map(day => (
-          <div key={day} className="text-center font-semibold">{day}</div>
+      <div className="mb-3">
+        <div>
+          <div className="inline-block rounded-full bg-yellow-300 text-yellow-300 w-3 h-3"></div>
+          <span> [실기]접수 </span>
+          <div className="inline-block rounded-full bg-yellow-500 text-yellow-500 w-3 h-3"></div>
+          <span> [실기]시험 </span>
+        </div>
+        <div>
+          <div className="inline-block rounded-full bg-blue-300 text-blue-300 w-3 h-3"></div>
+          <span> [필기]접수 </span>
+          <div className="inline-block rounded-full bg-blue-500 text-blue-500 w-3 h-3"></div>
+          <span> [필기]시험 </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-7">
+        {["일", "월", "화", "수", "목", "금", "토"].map((day) => (
+          <div key={day} className="text-center font-semibold">
+            {day}
+          </div>
         ))}
-        {daysInMonth.map(day => (
+        {daysInMonth.map((day) => (
           <CalendarDay
             key={day.toISOString()}
             date={day}
             events={calendarEvents.filter(
-              event =>
+              (event) =>
                 isSameDayAsDate(event.start, day) ||
                 (event.start < day && event.end >= day)
             )}

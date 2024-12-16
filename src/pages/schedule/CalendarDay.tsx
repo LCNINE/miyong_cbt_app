@@ -24,11 +24,11 @@ const CalendarDay: React.FC<Props> = ({ date, events }) => {
 
   return (
     <div
-      className={`border p-1 relative flex flex-col min-h-[120px] ${
+      className={`border-t relative flex flex-col min-h-[120px] ${
         isToday(date) ? "border-blue-500" : "border-gray-200"
       }`}
     >
-      <div className="text-sm text-gray-700">{date.getDate()}</div>
+      <div className="text-sm text-center text-gray-700">{date.getDate()}</div>
       {/* 이벤트를 절대 위치로 배치하기 위해 Container를 추가 */}
       <div className="absolute top-6 left-0 right-0">
         {sortedEvents.map((event) => {

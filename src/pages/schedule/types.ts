@@ -1,20 +1,23 @@
-import { Database, Tables } from '@/type/database.types';
+// src/pages/schedule/types.ts
+export type ExamType = "실기" | "필기";
 
-export type ExamTypeEnum = Database['public']['Enums']['exam_type_enum'];
+export type ExamSchedule = {
+  id: number;
+  exam_type: ExamType;
+  exam_round: number;
+  starts_at: string;
+  ends_at: string;
+  application_starts_at: string;
+  application_ends_at: string;
+  success_announ_at: string | null;
+};
 
-export interface ScheduleBar {
-  id: string;
-  type: 'application' | 'exam';
-  start: { row: number; col: number };
-  end: { row: number; col: number };
-  color: string;
-  text: string;
-  examType: string;
+export type CalendarEvent = {
+  id: number;
+  start: Date;
+  end: Date;
+  type: ExamType;
+  application: boolean;
   round: number;
-  verticalPosition: number;
-}
-
-export interface ExamCalendarProps {
-  schedules: Tables<'exam_schedules'>[];
-}
-
+  slot: number; // slot = -1 initially
+};

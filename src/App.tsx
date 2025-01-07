@@ -13,6 +13,7 @@ import RetestAfterTest from "./pages/retest/RetestAfterTest";
 import { ToastProvider } from "./components/ui/toast";
 import ProtectedRouteForSampleAi from "./pages/layout/ProtectedRouteSampleAi";
 import Schedule from "./pages/schedule/Schedule";
+import Calendar from "./pages/schedule/Calendar";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "schedule",
         element: <Schedule />,
+      },
+      {
+        path: "calendar",
+        element: <Calendar />,
       },
     ],
   },

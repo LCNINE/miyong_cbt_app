@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ExamSchedule } from "./types";
 import { supabase } from "@/lib/supabaseClient";
 import { format } from "date-fns";
+import { Calendar } from "lucide-react";
 
 const Calendar1: React.FC = () => {
   const [schedules, setSchedules] = useState<ExamSchedule[]>([]);
@@ -100,12 +101,12 @@ const Calendar1: React.FC = () => {
             </td>
             <td className="px-4 py-3">
               <span className="block">
-                <strong className="text-gray-700">필기</strong>: 객관식 4지 택일형
-                (60문제)
+                <strong className="text-gray-700">필기</strong>: 객관식 4지
+                택일형 (60문제)
               </span>
               <span className="block">
-                <strong className="text-gray-700">실기</strong>: 작업형 (약 2시간
-                30분)
+                <strong className="text-gray-700">실기</strong>: 작업형 (약
+                2시간 30분)
               </span>
             </td>
           </tr>
@@ -115,12 +116,12 @@ const Calendar1: React.FC = () => {
             </td>
             <td className="px-4 py-3">
               <span className="block">
-                <strong className="text-gray-700">일반</strong>: 필기 14,500원, 실기
-                24,900원
+                <strong className="text-gray-700">일반</strong>: 필기 14,500원,
+                실기 24,900원
               </span>
               <span className="block">
-                <strong className="text-gray-700">피부</strong>: 필기 14,500원, 실기
-                27,300원
+                <strong className="text-gray-700">피부</strong>: 필기 14,500원,
+                실기 27,300원
               </span>
               <span className="block">
                 <strong className="text-gray-700">메이크업, 네일</strong>: 필기
@@ -147,9 +148,7 @@ const Calendar1: React.FC = () => {
             <td className="px-4 py-3 font-semibold text-gray-700 bg-gray-100">
               시행처 / 문의
             </td>
-            <td className="px-4 py-3">
-              한국산업인력공단 / 고객센터 1644-8000
-            </td>
+            <td className="px-4 py-3">한국산업인력공단 / 고객센터 1644-8000</td>
           </tr>
           <tr className="border-b">
             <td className="px-4 py-3 font-semibold text-gray-700 bg-gray-100">
@@ -176,8 +175,6 @@ const Calendar1: React.FC = () => {
       </table>
     </div>
   );
-  
-
 
   if (loading) {
     return (
@@ -192,6 +189,13 @@ const Calendar1: React.FC = () => {
       <h1 className="text-xl font-bold text-center text-gray-700 mb-4">
         2025 미용자격증 시험정보
       </h1>
+      <a
+        href="/calendar"
+        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-black hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline gap-2"
+      >
+        <Calendar size={20} />
+        달력으로 보기
+      </a>
       {renderExamInfo()}
       <div className="flex justify-center mb-4">
         <button

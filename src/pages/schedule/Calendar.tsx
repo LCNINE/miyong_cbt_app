@@ -183,18 +183,27 @@ const Calendar: React.FC = () => {
         </button>
       </div>
 
-      <div className="mb-3">
-        <div>
-          <div className="inline-block rounded-full bg-yellow-300 text-yellow-300 w-3 h-3"></div>
-          <span> [실기]접수 </span>
-          <div className="inline-block rounded-full bg-yellow-500 text-yellow-500 w-3 h-3"></div>
-          <span> [실기]시험 </span>
-        </div>
-        <div>
-          <div className="inline-block rounded-full bg-blue-300 text-blue-300 w-3 h-3"></div>
-          <span> [필기]접수 </span>
-          <div className="inline-block rounded-full bg-blue-500 text-blue-500 w-3 h-3"></div>
-          <span> [필기]시험 </span>
+      {/* 돌아가기 버튼과 달력 설명 */}
+      <div className="flex justify-between items-center">
+        <a
+          href="/schedule"
+          className="mt-9 text-sm font-medium text-black hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline"
+        >
+          돌아가기
+        </a>
+        <div className="">
+          <div>
+            <div className="inline-block rounded-full bg-yellow-300 text-yellow-300 w-3 h-3"></div>
+            <span> [실기]접수 </span>
+            <div className="inline-block rounded-full bg-yellow-500 text-yellow-500 w-3 h-3"></div>
+            <span> [실기]시험 </span>
+          </div>
+          <div>
+            <div className="inline-block rounded-full bg-blue-300 text-blue-300 w-3 h-3"></div>
+            <span> [필기]접수 </span>
+            <div className="inline-block rounded-full bg-blue-500 text-blue-500 w-3 h-3"></div>
+            <span> [필기]시험 </span>
+          </div>
         </div>
       </div>
 

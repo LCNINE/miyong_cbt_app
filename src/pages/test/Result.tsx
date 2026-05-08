@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabaseClient";
 import { incorrectAnswer } from "@/type/testType";
 import { Helmet } from "react-helmet-async";
+import TestHeader from "./TestHeader";
 
 export default function Result() {
   const location = useLocation();
@@ -73,66 +74,72 @@ export default function Result() {
   };
 
   return (
-    <div className="h-full flex items-center justify-center bg-white">
+    <div className="flex flex-col h-full bg-white">
       <Helmet>
         <title>미용필시시험/test - 미용필기시험 시험결과</title>
         <meta name="description" content="미용필기시험 시험결과" />
         <meta name="google-site-verification" content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" />
         <meta name="naver-site-verification" content="dd4919f9da4dfbafdd79f35ed97505cf41418c50" />
       </Helmet>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md mx-4 p-8"
-      >
-        <div className="text-[1.4rem] font-semibold text-center text-gray-900 mb-8">
-          {licenseName} : {episode}회({made_at})
-        </div>
-        <div className="text-3xl font-semibold text-center text-gray-900 mb-8">
-          모의고사 결과
-        </div>
-        {score !== null ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          >
-            <div className="text-center mb-6">
-              <p className="text-5xl font-bold text-gray-900">
-                {Math.round(score)}점
-              </p>
-              <p
-                className={`text-xl mt-2 ${
-                  isPassed ? "text-green-500" : "text-red-500"
-                }`}
-              >
-                {isPassed ? "합격을 축하합니다." : "아쉽게도 불합격입니다."}
-              </p>
-            </div>
-            <div className="flex flex-col space-y-4">
-              <button
-                onClick={handleToHome}
-                className="w-full py-3 bg-gray-900 text-white rounded-md text-lg font-medium focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                홈으로 돌아가기
-              </button>
-              {score !== 100 && (
-                <button
-                  onClick={handleReviewIncorrectAnswers}
-                  className="w-full py-3 bg-gray-200 text-gray-900 rounded-md text-lg font-medium focus:outline-none focus:ring-2 focus:ring-gray-500"
+
+      <TestHeader />
+
+      <div className="flex-1 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full max-w-md mx-4 p-8"
+        >
+          <div className="text-sm text-center text-slate-500 mb-2">
+            {licenseName} · {episode}회 ({made_at})
+          </div>
+          <div className="text-2xl font-semibold text-center text-slate-900 mb-10">
+            모의고사 결과
+          </div>
+          {score !== null ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+            >
+              <div className="text-center mb-8">
+                <p className="text-6xl font-bold text-slate-900 tracking-tight">
+                  {Math.round(score)}
+                  <span className="text-2xl text-slate-500 ml-1">점</span>
+                </p>
+                <p
+                  className={`text-base mt-3 ${
+                    isPassed ? "text-green-600" : "text-red-500"
+                  }`}
                 >
-                  오답노트 보기
+                  {isPassed ? "합격을 축하합니다." : "아쉽게도 불합격입니다."}
+                </p>
+              </div>
+              <div className="flex flex-col space-y-3">
+                <button
+                  onClick={handleToHome}
+                  className="w-full py-4 bg-slate-900 text-white rounded-2xl text-base font-semibold hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                >
+                  홈으로 돌아가기
                 </button>
-              )}
-            </div>
-          </motion.div>
-        ) : (
-          <p className="text-center text-gray-500">
-            결과를 불러오는 중입니다...
-          </p>
-        )}
-      </motion.div>
+                {score !== 100 && (
+                  <button
+                    onClick={handleReviewIncorrectAnswers}
+                    className="w-full py-4 bg-slate-100 text-slate-900 rounded-2xl text-base font-semibold hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                  >
+                    오답노트 보기
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          ) : (
+            <p className="text-center text-slate-500">
+              결과를 불러오는 중입니다...
+            </p>
+          )}
+        </motion.div>
+      </div>
     </div>
   );
 }

@@ -14,18 +14,19 @@ import { Toaster } from "@/components/ui/toaster";
 const Layout = () => {
   const location = useLocation();
 
-  // 특정 경로에서는 Header만 보여주기 위한 조건
-  const isTestRoute = matchPath("/test/:test_id", location.pathname);
+  // Test/Result 경로는 자체 헤더를 사용하므로 공용 Header/Footer를 숨김
+  const isTestRoute = !!matchPath("/test/:test_id", location.pathname);
+  const isResultRoute = location.pathname === "/result";
+  const hideChrome = isTestRoute || isResultRoute;
 
   return (
     <div className="max-w-screen-md h-screen max-h-screen flex flex-col mx-auto shadow-md">
-      <Header />
+      {!hideChrome && <Header />}
       <main className="flex-1 overflow-y-auto ">
         <Outlet />
         <Toaster />
       </main>
-      {!isTestRoute && <Footer />} {/* test 경로가 아닐 때만 Footer 보여줌 */}
-      {/* <Footer /> */}
+      {!hideChrome && <Footer />}
     </div>
   );
 };

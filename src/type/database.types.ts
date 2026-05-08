@@ -185,6 +185,7 @@ export type Database = {
           content: string
           created_at: string
           episode: number | null
+          explanation: string | null
           id: number
           license: number
           made_at: string | null
@@ -195,6 +196,7 @@ export type Database = {
           content: string
           created_at?: string
           episode?: number | null
+          explanation?: string | null
           id?: number
           license: number
           made_at?: string | null
@@ -205,6 +207,7 @@ export type Database = {
           content?: string
           created_at?: string
           episode?: number | null
+          explanation?: string | null
           id?: number
           license?: number
           made_at?: string | null

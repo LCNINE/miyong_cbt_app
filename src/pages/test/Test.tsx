@@ -1,19 +1,21 @@
-import { useNavigate, useParams } from "react-router-dom"; // useNavigate 추가
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { ChevronLeft } from "lucide-react";
 import { PostList } from "./PostList";
-import { Pagination } from "./Pagination";
+import TestHeader from "./TestHeader";
+import { Progress } from "@/components/ui/progress";
 import {
   Example,
   Option,
   Question,
   QuestionWithExamplesAndOptions,
-} from "@/type/testType"; // 타입 import
+} from "@/type/testType";
 import { supabase } from "@/lib/supabaseClient.ts";
 import { Helmet } from "react-helmet-async";
 
 export default function Test() {
-  const { test_id } = useParams(); // 경로 파라미터로 test_id 가져오기
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 사용
+  const { test_id } = useParams();
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 1;
 
@@ -26,9 +28,9 @@ export default function Test() {
   const [episode, setEpisode] = useState<number | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: number | null;
-  }>({}); // 사용자가 선택한 답안 저장
+  }>({});
+  const [instantFeedback, setInstantFeedback] = useState(false);
 
-  // Supabase에서 데이터 가져오기
   useEffect(() => {
     const fetchQuestions = async () => {
       if (test_id) {
@@ -110,7 +112,7 @@ export default function Test() {
           .from("licenses")
           .select("license")
           .eq("id", licenseId)
-          .single(); // single() 호출
+          .single();
 
         if (error) {
           console.error("Error fetching license:", error);
@@ -118,7 +120,7 @@ export default function Test() {
         }
 
         if (license) {
-          setLicenseName(license.license); // data에서 license를 추출
+          setLicenseName(license.license);
         }
       }
     };
@@ -130,7 +132,6 @@ export default function Test() {
   const lastPostIndex = firstPostIndex + postsPerPage;
   const currentQuestion = questionData.slice(firstPostIndex, lastPostIndex);
 
-  // 선택 처리 함수
   const handleOptionSelect = (questionId: number, optionNo: number) => {
     setSelectedAnswers((prev) => ({
       ...prev,
@@ -138,15 +139,12 @@ export default function Test() {
     }));
   };
 
-  // 결과 제출 및 다음 페이지로 이동 함수
   const handleSubmit = () => {
-    // 모든 질문을 포함하여 선택하지 않은 문제는 기본값 null로 처리
     const answers = questionData.map((question) => ({
       questionId: question.id,
-      optionNo: selectedAnswers[question.id] || null, // 선택되지 않은 경우 null
+      optionNo: selectedAnswers[question.id] || null,
     }));
 
-    // navigate를 이용해 데이터를 state로 전달
     navigate("/result", {
       state: {
         licenseName: licenseName,
@@ -157,40 +155,78 @@ export default function Test() {
     });
   };
 
+  const totalQuestions = questionData.length;
+  const progressValue =
+    totalQuestions > 0 ? (currentPage / totalQuestions) * 100 : 0;
+
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-white">
       <Helmet>
         <title>미용필시시험/test - 미용필기시험 모의고사</title>
         <meta name="description" content="미용필기시험 모의고사" />
         <meta name="google-site-verification" content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" />
         <meta name="naver-site-verification" content="dd4919f9da4dfbafdd79f35ed97505cf41418c50" />
       </Helmet>
-      <div className="text-base text-gray-900">
-        {licenseName} : {episode}회({madeAt}) 모의고사
+
+      <TestHeader confirmExit />
+
+      <div className="px-4 pt-5 pb-2 shrink-0">
+        <div className="flex items-center justify-end mb-2">
+          <label className="inline-flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={instantFeedback}
+              onChange={(e) => setInstantFeedback(e.target.checked)}
+              className="h-4 w-4 rounded border-slate-300 accent-slate-900"
+            />
+            바로 채점
+          </label>
+        </div>
+        <div className="text-center">
+          <span className="text-5xl font-bold text-slate-900 tracking-tight">
+            {String(currentPage).padStart(2, "0")}
+          </span>
+          <span className="text-2xl text-slate-400 ml-2">
+            / {totalQuestions || "—"}
+          </span>
+        </div>
+        {licenseName && (
+          <div className="text-center text-xs text-slate-500 mt-1">
+            {licenseName} · {episode}회 ({madeAt})
+          </div>
+        )}
       </div>
 
-      <main className="flex-grow">
+      <main className="flex-1 px-4 pt-4 pb-4 overflow-y-auto">
         <PostList
           list={currentQuestion}
           onSelectOption={handleOptionSelect}
           selectedAnswers={selectedAnswers}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-          totalQuestions={questionData.length}
+          totalQuestions={totalQuestions}
+          onSubmit={handleSubmit}
+          instantFeedback={instantFeedback}
         />
       </main>
 
-      <footer className="flex-grow-0">
-        <Pagination
-          postsNum={questionData.length}
-          postsPerPage={postsPerPage}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-          handleSubmit={handleSubmit} // handleSubmit을 Pagination에 전달
-        />
+      <footer className="flex-grow-0 px-4 pb-5 pt-2 shrink-0">
+        <div className="flex items-center justify-between mb-2">
+          <button
+            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+            disabled={currentPage <= 1}
+            className="flex items-center gap-1 text-sm text-slate-600 disabled:text-slate-300 disabled:cursor-not-allowed hover:text-slate-900"
+            aria-label="이전 문제"
+          >
+            <ChevronLeft size={16} />
+            이전 문제
+          </button>
+          <span className="text-xs text-slate-400">
+            {currentPage} / {totalQuestions || "—"}
+          </span>
+        </div>
+        <Progress value={progressValue} className="h-1.5" />
       </footer>
-
-      {/* 별도의 결과 제출 버튼은 필요 없음, Pagination 내에서 처리됨 */}
     </div>
   );
 }

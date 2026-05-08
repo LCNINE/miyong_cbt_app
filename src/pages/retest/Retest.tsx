@@ -1,6 +1,7 @@
 import { incorrectAnswer, reTestQustion } from "@/type/testType";
 import RetestCard from "./RetestCard";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useQuery } from "react-query";
 import { fetchIncorrectAnswers, fetchQuestionsAndOptions } from "./fetch";
@@ -8,6 +9,7 @@ import { Helmet } from "react-helmet-async";
 
 export default function Retest() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [questionData, setQuestionData] = useState<reTestQustion[]>([]);
 
   // incorrectAnswers 가져오기 (react-query 사용)
@@ -75,12 +77,22 @@ export default function Retest() {
   }, [questionsAndOptions, incorrectAnswers]);
 
   if (isLoadingIncorrect || isLoadingQuestions) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-full text-slate-500">
+        불러오는 중...
+      </div>
+    );
   }
 
   if (incorrectError || questionError) {
-    return <div>Error loading data.</div>;
+    return (
+      <div className="flex items-center justify-center h-full text-red-500">
+        데이터를 불러오지 못했습니다.
+      </div>
+    );
   }
+
+  const isEmpty = questionData.length === 0;
 
   return (
     <>
@@ -90,7 +102,26 @@ export default function Retest() {
         <meta name="google-site-verification" content="LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" />
         <meta name="naver-site-verification" content="dd4919f9da4dfbafdd79f35ed97505cf41418c50" />
       </Helmet>
-      <RetestCard answersToRetest={questionData} />
+      {isEmpty ? (
+        <div className="flex flex-col items-center justify-center h-full px-6 text-center">
+          <h2 className="text-xl font-semibold text-slate-900 mb-2">
+            아직 다시 풀 문제가 없어요
+          </h2>
+          <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+            모의고사를 풀고 틀린 문제가 생기면
+            <br />
+            여기에서 다시 풀어볼 수 있어요.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="px-6 py-3 rounded-2xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800"
+          >
+            모의고사 풀러 가기
+          </button>
+        </div>
+      ) : (
+        <RetestCard answersToRetest={questionData} />
+      )}
     </>
   );
 }

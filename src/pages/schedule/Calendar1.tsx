@@ -187,7 +187,7 @@ const Calendar1: React.FC = () => {
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold text-center text-gray-700 mb-4">
-        2026 미용자격증 시험정보
+        {new Date().getFullYear()} 미용자격증 시험정보
       </h1>
       <a
         href="/calendar"

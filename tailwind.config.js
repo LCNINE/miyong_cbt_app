@@ -12,7 +12,35 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-      colors: {},
+      // 화해(Hwahae) 디자인 토큰
+      colors: {
+        brand: {
+          DEFAULT: '#00d5ce', // Hwahae Turquoise
+          bright: '#22d3d6',
+          deep: '#00a5aa', // hover
+          tint: '#eefbfb', // Mint Tint
+        },
+        ink: {
+          DEFAULT: '#111111', // Ink Soft
+          black: '#000000',
+        },
+        body: '#3d3d3d',
+        muted: '#666666',
+        faint: '#999999',
+        placeholder: '#aaaaaa',
+        canvas: '#f7f7f7', // Surface Grey
+        line: '#e8e8e8', // Hairline
+        divider: '#d8d8d8',
+        amber: '#ffaa3c', // Rating
+        info: '#467dff', // Action Blue
+        alert: '#ff5555',
+      },
+      fontFamily: {
+        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        card: 'rgba(0, 0, 0, 0.08) 0px 2px 8px',
+      },
       keyframes: {
         'accordion-down': {
           from: {

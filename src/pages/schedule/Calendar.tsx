@@ -187,7 +187,7 @@ const Calendar: React.FC = () => {
       <div className="flex justify-between items-center">
         <a
           href="/schedule"
-          className="mt-9 text-sm font-medium text-black hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline"
+          className="mt-9 text-sm font-medium text-black hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline"
         >
           돌아가기
         </a>

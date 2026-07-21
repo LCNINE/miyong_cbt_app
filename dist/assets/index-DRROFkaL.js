@@ -14053,22 +14053,23 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-slate-300",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-slate-900 text-slate-50 shadow hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
-        destructive: "bg-red-500 text-slate-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90",
-        outline: "border border-slate-200 bg-white shadow-sm hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50",
-        secondary: "bg-slate-100 text-slate-900 shadow-sm hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
-        ghost: "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
-        link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50"
+        default: "bg-brand text-white hover:bg-brand-deep",
+        destructive: "bg-alert text-white hover:bg-alert/90",
+        outline: "border border-line bg-white text-body hover:bg-canvas",
+        secondary: "bg-brand-tint text-ink hover:bg-brand-tint/70",
+        chip: "border border-line bg-white text-body rounded h-6 px-2 text-xs font-normal",
+        ghost: "text-ink hover:bg-canvas",
+        link: "text-body underline-offset-4 hover:underline"
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9"
+        default: "h-11 px-4 py-2",
+        sm: "h-9 px-3 text-sm",
+        lg: "h-12 px-8",
+        icon: "h-11 w-11"
       }
     },
     defaultVariants: {
@@ -16612,7 +16613,7 @@ class RealtimeClient {
       }
     });
     __vitePreload(async () => {
-      const { default: WS } = await import("./browser-Dz9guk26.js").then((n2) => n2.b);
+      const { default: WS } = await import("./browser--OBqLD64.js").then((n2) => n2.b);
       return { default: WS };
     }, true ? [] : void 0).then(({ default: WS }) => {
       this.conn = new WS(this._endPointURL(), void 0, {
@@ -20945,6 +20946,134 @@ function useToast() {
     dismiss: (toastId) => dispatch({ type: "DISMISS_TOAST", toastId })
   };
 }
+/**
+ * @license lucide-react v0.441.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+const mergeClasses = (...classes) => classes.filter((className, index, array) => {
+  return Boolean(className) && array.indexOf(className) === index;
+}).join(" ");
+/**
+ * @license lucide-react v0.441.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+var defaultAttributes = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: 24,
+  height: 24,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+};
+/**
+ * @license lucide-react v0.441.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Icon = reactExports.forwardRef(
+  ({
+    color: color2 = "currentColor",
+    size: size3 = 24,
+    strokeWidth = 2,
+    absoluteStrokeWidth,
+    className = "",
+    children,
+    iconNode,
+    ...rest
+  }, ref) => {
+    return reactExports.createElement(
+      "svg",
+      {
+        ref,
+        ...defaultAttributes,
+        width: size3,
+        height: size3,
+        stroke: color2,
+        strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size3) : strokeWidth,
+        className: mergeClasses("lucide", className),
+        ...rest
+      },
+      [
+        ...iconNode.map(([tag, attrs]) => reactExports.createElement(tag, attrs)),
+        ...Array.isArray(children) ? children : [children]
+      ]
+    );
+  }
+);
+/**
+ * @license lucide-react v0.441.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const createLucideIcon = (iconName, iconNode) => {
+  const Component = reactExports.forwardRef(
+    ({ className, ...props }, ref) => reactExports.createElement(Icon, {
+      ref,
+      iconNode,
+      className: mergeClasses(`lucide-${toKebabCase(iconName)}`, className),
+      ...props
+    })
+  );
+  Component.displayName = `${iconName}`;
+  return Component;
+};
+/**
+ * @license lucide-react v0.441.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Calendar$1 = createLucideIcon("Calendar", [
+  ["path", { d: "M8 2v4", key: "1cmpym" }],
+  ["path", { d: "M16 2v4", key: "4m81vk" }],
+  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
+  ["path", { d: "M3 10h18", key: "8toen8" }]
+]);
+/**
+ * @license lucide-react v0.441.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ChevronLeft = createLucideIcon("ChevronLeft", [
+  ["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]
+]);
+/**
+ * @license lucide-react v0.441.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const LoaderCircle = createLucideIcon("LoaderCircle", [
+  ["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]
+]);
+/**
+ * @license lucide-react v0.441.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const PencilLine = createLucideIcon("PencilLine", [
+  ["path", { d: "M12 20h9", key: "t2du7b" }],
+  [
+    "path",
+    {
+      d: "M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z",
+      key: "1ykcvy"
+    }
+  ],
+  ["path", { d: "m15 5 3 3", key: "1w25hb" }]
+]);
 const AuthContext = reactExports.createContext(void 0);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = reactExports.useState(null);
@@ -20989,10 +21118,7 @@ const AuthProvider = ({ children }) => {
       });
     }
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(AuthContext.Provider, { value: { user, session, loading, signOut }, children: [
-    !loading ? children : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: "Loading..." }),
-    " "
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(AuthContext.Provider, { value: { user, session, loading, signOut }, children: !loading ? children : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-8 w-8 animate-spin text-muted-foreground" }) }) });
 };
 const useAuth = () => {
   const context = reactExports.useContext(AuthContext);
@@ -21023,7 +21149,7 @@ function Header() {
   };
   function goAlmond() {
     window.open(
-      "https://almondyoung.com/product/search.html?keyword=%EA%B5%AD%EA%B0%80%EA%B3%A0%EC%8B%9C+%EC%9B%90%ED%8C%A8%EC%8A%A4",
+      "https://almondyoung.com/kr/search?q=%EB%AC%B8%EC%A0%9C%EC%A7%91",
       "_blank"
     );
   }
@@ -21035,8 +21161,16 @@ function Header() {
     /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "absolute left-[-9999px]", children: "미용 필기시험 준비를 위한 기출문제와 최신 정보" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xl font-bold text-gray-900 xs:tracking-tight xs:text-base xs:font-semibold", children: isTest ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xl font-bold text-gray-900 xs:tracking-tight xs:text-base xs:font-semibold", children: "미용필기시험" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: goBack, children: "미용필기시험" }) }),
     !isTest && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-right", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button$1, { onClick: goAlmond, className: "w-20 mr-2", children: "무료문제집" }),
-      user ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button$1, { onClick: handleSignOut, className: "w-28", children: "로그아웃" }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button$1, { onClick: handleSignIn, className: "w-28", children: "로그인/회원가입" }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Button$1, { variant: "default", onClick: goAlmond, className: "w-20 mr-2", children: "무료문제집" }),
+      user ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button$1,
+        {
+          variant: "outline",
+          onClick: handleSignOut,
+          className: "w-28",
+          children: "로그아웃"
+        }
+      ) }) : /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button$1, { variant: "outline", onClick: handleSignIn, className: "w-28", children: "로그인/회원가입" }) })
     ] })
   ] });
 }
@@ -22495,12 +22629,12 @@ const ToastViewport = reactExports.forwardRef(({ className, ...props }, ref) => 
 ));
 ToastViewport.displayName = Viewport.displayName;
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-md border border-slate-200 p-4 pr-6 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full dark:border-slate-800",
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-md border border-line p-4 pr-6 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full dark:border-body",
   {
     variants: {
       variant: {
-        default: "border bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-50",
-        destructive: "destructive group border-red-500 bg-red-500 text-slate-50 dark:border-red-900 dark:bg-red-900 dark:text-slate-50"
+        default: "border bg-white text-ink dark:bg-ink dark:text-canvas",
+        destructive: "destructive group border-red-500 bg-red-500 text-canvas dark:border-red-900 dark:bg-red-900 dark:text-canvas"
       }
     },
     defaultVariants: {
@@ -22524,7 +22658,7 @@ const ToastAction = reactExports.forwardRef(({ className, ...props }, ref) => /*
   {
     ref,
     className: cn(
-      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-transparent px-3 text-sm font-medium transition-colors hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-slate-100/40 group-[.destructive]:hover:border-red-500/30 group-[.destructive]:hover:bg-red-500 group-[.destructive]:hover:text-slate-50 group-[.destructive]:focus:ring-red-500 dark:border-slate-800 dark:hover:bg-slate-800 dark:focus:ring-slate-300 dark:group-[.destructive]:border-slate-800/40 dark:group-[.destructive]:hover:border-red-900/30 dark:group-[.destructive]:hover:bg-red-900 dark:group-[.destructive]:hover:text-slate-50 dark:group-[.destructive]:focus:ring-red-900",
+      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-line bg-transparent px-3 text-sm font-medium transition-colors hover:bg-canvas focus:outline-none focus:ring-1 focus:ring-ink disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-canvas/40 group-[.destructive]:hover:border-red-500/30 group-[.destructive]:hover:bg-red-500 group-[.destructive]:hover:text-canvas group-[.destructive]:focus:ring-red-500 dark:border-body dark:hover:bg-body dark:focus:ring-line dark:group-[.destructive]:border-body/40 dark:group-[.destructive]:hover:border-red-900/30 dark:group-[.destructive]:hover:bg-red-900 dark:group-[.destructive]:hover:text-canvas dark:group-[.destructive]:focus:ring-red-900",
       className
     ),
     ...props
@@ -22536,7 +22670,7 @@ const ToastClose = reactExports.forwardRef(({ className, ...props }, ref) => /* 
   {
     ref,
     className: cn(
-      "absolute right-1 top-1 rounded-md p-1 text-slate-950/50 opacity-0 transition-opacity hover:text-slate-950 focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600 dark:text-slate-50/50 dark:hover:text-slate-50",
+      "absolute right-1 top-1 rounded-md p-1 text-ink/50 opacity-0 transition-opacity hover:text-ink focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600 dark:text-canvas/50 dark:hover:text-canvas",
       className
     ),
     "toast-close": "",
@@ -32165,7 +32299,7 @@ const Command = reactExports.forwardRef(({ className, ...props }, ref) => /* @__
   {
     ref,
     className: cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-md bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-50",
+      "flex h-full w-full flex-col overflow-hidden rounded-md bg-white text-ink dark:bg-ink dark:text-canvas",
       className
     ),
     ...props
@@ -32179,7 +32313,7 @@ const CommandInput = reactExports.forwardRef(({ className, ...props }, ref) => /
     {
       ref,
       className: cn(
-        "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-slate-500 disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-slate-400",
+        "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-faint",
         className
       ),
       ...props
@@ -32210,7 +32344,7 @@ const CommandGroup = reactExports.forwardRef(({ className, ...props }, ref) => /
   {
     ref,
     className: cn(
-      "overflow-hidden p-1 text-slate-950 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-slate-500 dark:text-slate-50 dark:[&_[cmdk-group-heading]]:text-slate-400",
+      "overflow-hidden p-1 text-ink [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted dark:text-canvas dark:[&_[cmdk-group-heading]]:text-faint",
       className
     ),
     ...props
@@ -32221,7 +32355,7 @@ const CommandSeparator = reactExports.forwardRef(({ className, ...props }, ref) 
   He.Separator,
   {
     ref,
-    className: cn("-mx-1 h-px bg-slate-200 dark:bg-slate-800", className),
+    className: cn("-mx-1 h-px bg-line dark:bg-body", className),
     ...props
   }
 ));
@@ -32231,7 +32365,7 @@ const CommandItem = reactExports.forwardRef(({ className, ...props }, ref) => /*
   {
     ref,
     className: cn(
-      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-slate-100 data-[selected=true]:text-slate-900 data-[disabled=true]:opacity-50 dark:data-[selected=true]:bg-slate-800 dark:data-[selected=true]:text-slate-50",
+      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-canvas data-[selected=true]:text-ink data-[disabled=true]:opacity-50 dark:data-[selected=true]:bg-body dark:data-[selected=true]:text-canvas",
       className
     ),
     ...props
@@ -32338,7 +32472,7 @@ const FormDescription = reactExports.forwardRef(({ className, ...props }, ref) =
     {
       ref,
       id: formDescriptionId,
-      className: cn("text-[0.8rem] text-slate-500 dark:text-slate-400", className),
+      className: cn("text-[0.8rem] text-muted dark:text-faint", className),
       ...props
     }
   );
@@ -34758,7 +34892,7 @@ const PopoverContent = reactExports.forwardRef(({ className, align = "center", s
     align,
     sideOffset,
     className: cn(
-      "z-50 w-72 rounded-md border border-slate-200 bg-white p-4 text-slate-950 shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-50",
+      "z-50 w-72 rounded-md border border-line bg-white p-4 text-ink shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 dark:border-body dark:bg-ink dark:text-canvas",
       className
     ),
     ...props
@@ -34772,7 +34906,7 @@ function Skeleton({
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     "div",
     {
-      className: cn("animate-pulse rounded-md bg-slate-900/10 dark:bg-slate-50/10", className),
+      className: cn("animate-pulse rounded-md bg-ink/10 dark:bg-canvas/10", className),
       ...props
     }
   );
@@ -49919,139 +50053,41 @@ function ComboboxForm() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(Button$1, { type: "submit", "aria-label": "문제를 풀기 위한 버튼", children: "문제 풀기" })
   ] }) });
 }
-/**
- * @license lucide-react v0.441.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-const mergeClasses = (...classes) => classes.filter((className, index, array) => {
-  return Boolean(className) && array.indexOf(className) === index;
-}).join(" ");
-/**
- * @license lucide-react v0.441.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-var defaultAttributes = {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: 24,
-  height: 24,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 2,
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-};
-/**
- * @license lucide-react v0.441.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const Icon = reactExports.forwardRef(
-  ({
-    color: color2 = "currentColor",
-    size: size3 = 24,
-    strokeWidth = 2,
-    absoluteStrokeWidth,
-    className = "",
-    children,
-    iconNode,
-    ...rest
-  }, ref) => {
-    return reactExports.createElement(
-      "svg",
-      {
-        ref,
-        ...defaultAttributes,
-        width: size3,
-        height: size3,
-        stroke: color2,
-        strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size3) : strokeWidth,
-        className: mergeClasses("lucide", className),
-        ...rest
-      },
-      [
-        ...iconNode.map(([tag, attrs]) => reactExports.createElement(tag, attrs)),
-        ...Array.isArray(children) ? children : [children]
-      ]
-    );
-  }
-);
-/**
- * @license lucide-react v0.441.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const createLucideIcon = (iconName, iconNode) => {
-  const Component = reactExports.forwardRef(
-    ({ className, ...props }, ref) => reactExports.createElement(Icon, {
-      ref,
-      iconNode,
-      className: mergeClasses(`lucide-${toKebabCase(iconName)}`, className),
-      ...props
-    })
-  );
-  Component.displayName = `${iconName}`;
-  return Component;
-};
-/**
- * @license lucide-react v0.441.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const Calendar$1 = createLucideIcon("Calendar", [
-  ["path", { d: "M8 2v4", key: "1cmpym" }],
-  ["path", { d: "M16 2v4", key: "4m81vk" }],
-  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
-  ["path", { d: "M3 10h18", key: "8toen8" }]
-]);
-/**
- * @license lucide-react v0.441.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const ChevronLeft = createLucideIcon("ChevronLeft", [
-  ["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]
-]);
 function Home() {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center h-full justify-center bg-white relative", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex flex-col items-center justify-center h-full bg-white", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs(Helmet, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("title", { children: "미용필기시험/ - 미용필기시험 root page" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("meta", { name: "description", content: "미용필기시험 root page" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("meta", { name: "google-site-verification", content: "LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("meta", { name: "naver-site-verification", content: "dd4919f9da4dfbafdd79f35ed97505cf41418c50" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center flex-1 h-full w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ComboboxForm, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-0 justify-between items-end w-full p-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "a",
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "meta",
         {
-          href: "/schedule",
-          className: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-black hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline gap-2",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar$1, { size: 20 }),
-            "연간일정 보러가기"
-          ]
+          name: "google-site-verification",
+          content: "LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI"
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "a",
+        "meta",
         {
-          href: "http://pf.kakao.com/_xaxgxazs",
-          target: "_blank",
-          rel: "noopener noreferrer",
-          className: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-black hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline",
-          children: "카카오톡 문의하기"
+          name: "naver-site-verification",
+          content: "dd4919f9da4dfbafdd79f35ed97505cf41418c50"
         }
       )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center flex-1 w-full h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ComboboxForm, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-end justify-between w-full p-4 flex-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Button$1, { asChild: true, variant: "link", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/schedule", className: "gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar$1, { size: 20 }),
+        "연간일정 보러가기"
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Button$1, { asChild: true, variant: "link", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Link,
+        {
+          to: "http://pf.kakao.com/_xaxgxazs",
+          target: "_blank",
+          rel: "noopener noreferrer",
+          children: "카카오톡 문의하기"
+        }
+      ) })
     ] })
   ] });
 }
@@ -50070,7 +50106,8 @@ function PostList({
   currentPage,
   setCurrentPage,
   totalQuestions,
-  onSubmit
+  onSubmit,
+  instantFeedback
 }) {
   const [signedUrls, setSignedUrls] = reactExports.useState({});
   const [loadingImages, setLoadingImages] = reactExports.useState({});
@@ -50108,91 +50145,134 @@ function PostList({
     loadImageUrls();
   }, [list]);
   const isLastPage = currentPage === totalQuestions;
-  const handleOptionSelect = (questionId, optionNo) => {
+  const handleOptionSelect = (questionId, optionNo, isCorrect) => {
     onSelectOption(questionId, optionNo);
-    if (!isLastPage && currentPage < totalQuestions) {
-      setTimeout(() => {
-        setCurrentPage(currentPage + 1);
-      }, 500);
-    }
+    if (isLastPage) return;
+    if (instantFeedback && !isCorrect) return;
+    setTimeout(() => {
+      setCurrentPage(currentPage + 1);
+    }, 500);
   };
   const handleImageLoad = (content) => {
     setLoadingImages((prev2) => ({ ...prev2, [content]: false }));
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("ol", { className: "list-none space-y-6 flex-1 flex flex-col", children: list.map(({ id: id2, no, content, examples, options }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex flex-col flex-1", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-center text-slate-900 leading-relaxed mb-6 px-2", children: content }),
-    examples && examples.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: examples.map((example) => /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: example.type === "image" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      loadingImages[example.content] && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-t-2 border-slate-500" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "img",
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("ol", { className: "list-none space-y-6 flex-1 flex flex-col", children: list.map(({ id: id2, content, examples, options, explanation }) => {
+    const selectedOptionNo = selectedAnswers[id2] ?? null;
+    const correctOption = options == null ? void 0 : options.find((o2) => o2.is_correct);
+    const hasSelected = selectedOptionNo !== null;
+    const isAnswerCorrect = hasSelected && (correctOption == null ? void 0 : correctOption.no) === selectedOptionNo;
+    const showFeedback = instantFeedback && hasSelected;
+    const showWrongHint = showFeedback && !isAnswerCorrect;
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex flex-col flex-1", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-center text-ink leading-relaxed mb-6 px-2", children: content }),
+      examples && examples.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: examples.map((example) => /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: example.type === "image" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        loadingImages[example.content] && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-t-2 border-brand" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "img",
+          {
+            src: signedUrls[example.content] || "",
+            alt: `Example ${example.id}`,
+            className: cn(
+              "max-w-full mx-auto",
+              loadingImages[example.content] ? "hidden" : "block"
+            ),
+            onLoad: () => handleImageLoad(example.content)
+          }
+        )
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted text-center", children: example.content }) }, example.id)) }) }),
+      options && options.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-3", children: options.map((option) => {
+        const isSelected = selectedOptionNo === option.no;
+        const isCorrectOption = !!option.is_correct;
+        let stateClass = "border-line text-ink hover:border-brand";
+        if (showFeedback) {
+          if (isSelected && isAnswerCorrect) {
+            stateClass = "border-emerald-500 bg-emerald-50 text-emerald-900";
+          } else if (isSelected && !isAnswerCorrect) {
+            stateClass = "border-red-500 bg-red-50 text-red-900";
+          } else if (!isAnswerCorrect && isCorrectOption) {
+            stateClass = "border-emerald-500 text-emerald-700 bg-white";
+          } else {
+            stateClass = "border-line text-faint bg-white";
+          }
+        } else if (isSelected) {
+          stateClass = "border-brand bg-brand-tint text-ink";
+        }
+        return /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "label",
+          {
+            className: cn(
+              "flex items-start gap-3 w-full px-4 py-3 rounded-2xl border bg-white shadow-sm cursor-pointer transition-colors",
+              stateClass
+            ),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "radio",
+                  name: `question-${id2}`,
+                  value: option.no,
+                  checked: isSelected,
+                  onChange: () => handleOptionSelect(id2, option.no, isCorrectOption),
+                  className: "hidden"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-semibold w-5 shrink-0 text-right", children: [
+                option.no,
+                "."
+              ] }),
+              option.type === "image" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex justify-center", children: [
+                loadingImages[option.content] && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-6 w-6 border-t-2 border-brand" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "img",
+                  {
+                    src: signedUrls[option.content] || "",
+                    alt: `Option ${option.no}`,
+                    className: cn(
+                      "max-w-full",
+                      loadingImages[option.content] ? "hidden" : "block"
+                    ),
+                    onLoad: () => handleImageLoad(option.content)
+                  }
+                )
+              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 leading-relaxed text-left break-keep", children: option.content })
+            ]
+          }
+        ) }, option.no);
+      }) }),
+      showWrongHint && correctOption && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-red-700", children: "오답이에요" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-body mt-1 leading-relaxed break-keep", children: [
+          "정답은",
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-semibold text-emerald-700", children: [
+            correctOption.no,
+            "번"
+          ] }),
+          "이에요.",
+          correctOption.type !== "image" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            " ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-ink", children: correctOption.content })
+          ] })
+        ] }),
+        explanation && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-body mt-3 pt-3 border-t border-red-200 leading-relaxed break-keep whitespace-pre-line", children: explanation })
+      ] }),
+      isLastPage ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
         {
-          src: signedUrls[example.content] || "",
-          alt: `Example ${example.id}`,
-          className: cn(
-            "max-w-full mx-auto",
-            loadingImages[example.content] ? "hidden" : "block"
-          ),
-          onLoad: () => handleImageLoad(example.content)
+          onClick: onSubmit,
+          className: "mt-6 w-full py-4 rounded-2xl bg-brand text-white text-base font-semibold hover:bg-brand-deep focus:outline-none focus:ring-2 focus:ring-brand",
+          children: "제출하기"
+        }
+      ) : showWrongHint && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => setCurrentPage(currentPage + 1),
+          className: "mt-3 w-full py-3 rounded-2xl bg-brand text-white text-sm font-semibold hover:bg-brand-deep",
+          children: "다음 문제"
         }
       )
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-slate-600 text-center", children: example.content }) }, example.id)) }) }),
-    options && options.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-3", children: options.map((option) => {
-      const isSelected = selectedAnswers[id2] === option.no;
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "label",
-        {
-          className: cn(
-            "flex items-center justify-center gap-2 w-full px-5 py-4 rounded-2xl border bg-white shadow-sm cursor-pointer transition-colors text-center",
-            isSelected ? "border-slate-900 bg-slate-900 text-white" : "border-slate-200 text-slate-900 hover:border-slate-400"
-          ),
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "radio",
-                name: `question-${id2}`,
-                value: option.no,
-                checked: isSelected,
-                onChange: () => handleOptionSelect(id2, option.no),
-                className: "hidden"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-medium", children: [
-              option.no,
-              "."
-            ] }),
-            option.type === "image" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              loadingImages[option.content] && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-6 w-6 border-t-2 border-slate-500" }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "img",
-                {
-                  src: signedUrls[option.content] || "",
-                  alt: `Option ${option.no}`,
-                  className: cn(
-                    "max-w-full",
-                    loadingImages[option.content] ? "hidden" : "block"
-                  ),
-                  onLoad: () => handleImageLoad(option.content)
-                }
-              )
-            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: option.content })
-          ]
-        }
-      ) }, option.no);
-    }) }),
-    isLastPage && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        onClick: onSubmit,
-        className: "mt-6 w-full py-4 rounded-2xl bg-slate-900 text-white text-base font-semibold hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500",
-        children: "제출하기"
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "sr-only", children: [
-      "문제 ",
-      no
-    ] })
-  ] }, id2)) });
+    ] }, id2);
+  }) });
 }
 function TestHeader({ confirmExit = false }) {
   const navigate = useNavigate();
@@ -50320,14 +50400,14 @@ const Progress = reactExports.forwardRef(({ className, value, ...props }, ref) =
   {
     ref,
     className: cn(
-      "relative h-2 w-full overflow-hidden rounded-full bg-slate-900/20 dark:bg-slate-50/20",
+      "relative h-2 w-full overflow-hidden rounded-full bg-ink/20 dark:bg-canvas/20",
       className
     ),
     ...props,
     children: /* @__PURE__ */ jsxRuntimeExports.jsx(
       Indicator,
       {
-        className: "h-full w-full flex-1 bg-slate-900 transition-all dark:bg-slate-50",
+        className: "h-full w-full flex-1 bg-ink transition-all dark:bg-canvas",
         style: { transform: `translateX(-${100 - (value || 0)}%)` }
       }
     )
@@ -50345,6 +50425,7 @@ function Test() {
   const [madeAt, setMadeAt] = reactExports.useState(null);
   const [episode, setEpisode] = reactExports.useState(null);
   const [selectedAnswers, setSelectedAnswers] = reactExports.useState({});
+  const [instantFeedback, setInstantFeedback] = reactExports.useState(false);
   reactExports.useEffect(() => {
     const fetchQuestions = async () => {
       if (test_id) {
@@ -50444,36 +50525,71 @@ function Test() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("meta", { name: "naver-site-verification", content: "dd4919f9da4dfbafdd79f35ed97505cf41418c50" })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TestHeader, { confirmExit: true }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "flex-1 flex flex-col px-4 pt-8 pb-4 overflow-y-auto", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-2", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-5 pb-2 shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-end mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "inline-flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "checkbox",
+            checked: instantFeedback,
+            onChange: (e2) => setInstantFeedback(e2.target.checked),
+            className: "h-4 w-4 rounded border-slate-300 accent-slate-900"
+          }
+        ),
+        "바로 채점"
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-5xl font-bold text-slate-900 tracking-tight", children: String(currentPage).padStart(2, "0") }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-2xl text-slate-400 ml-2", children: [
           "/ ",
           totalQuestions || "—"
         ] })
       ] }),
-      licenseName && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center text-sm text-slate-500 mb-8", children: [
+      licenseName && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center text-xs text-slate-500 mt-1", children: [
         licenseName,
         " · ",
         episode,
         "회 (",
         madeAt,
         ")"
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        PostList,
-        {
-          list: currentQuestion,
-          onSelectOption: handleOptionSelect,
-          selectedAnswers,
-          currentPage,
-          setCurrentPage,
-          totalQuestions,
-          onSubmit: handleSubmit
-        }
-      )
+      ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("footer", { className: "flex-grow-0 px-4 pb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Progress, { value: progressValue, className: "h-1.5" }) })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "flex-1 px-4 pt-4 pb-4 overflow-y-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      PostList,
+      {
+        list: currentQuestion,
+        onSelectOption: handleOptionSelect,
+        selectedAnswers,
+        currentPage,
+        setCurrentPage,
+        totalQuestions,
+        onSubmit: handleSubmit,
+        instantFeedback
+      }
+    ) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("footer", { className: "flex-grow-0 px-4 pb-5 pt-2 shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setCurrentPage(Math.max(1, currentPage - 1)),
+            disabled: currentPage <= 1,
+            className: "flex items-center gap-1 text-sm text-slate-600 disabled:text-slate-300 disabled:cursor-not-allowed hover:text-slate-900",
+            "aria-label": "이전 문제",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronLeft, { size: 16 }),
+              "이전 문제"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-400", children: [
+          currentPage,
+          " / ",
+          totalQuestions || "—"
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Progress, { value: progressValue, className: "h-1.5" })
+    ] })
   ] });
 }
 function RetestCard({ answersToRetest }) {
@@ -50627,6 +50743,7 @@ async function fetchQuestionsAndOptions(questionIds) {
 }
 function Retest() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [questionData, setQuestionData] = reactExports.useState([]);
   const {
     data: incorrectAnswers,
@@ -50683,11 +50800,12 @@ function Retest() {
     }
   }, [questionsAndOptions, incorrectAnswers]);
   if (isLoadingIncorrect || isLoadingQuestions) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: "Loading..." });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center h-full text-slate-500", children: "불러오는 중..." });
   }
   if (incorrectError || questionError) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: "Error loading data." });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center h-full text-red-500", children: "데이터를 불러오지 못했습니다." });
   }
+  const isEmpty = questionData.length === 0;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs(Helmet, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("title", { children: "미용필시시험/retest - 미용필기시험 재시험" }),
@@ -50695,7 +50813,22 @@ function Retest() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("meta", { name: "google-site-verification", content: "LK2lMpCXPbmg_peIKBrco_0Rp_scYKp4Mn0u5yI6vCI" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("meta", { name: "naver-site-verification", content: "dd4919f9da4dfbafdd79f35ed97505cf41418c50" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(RetestCard, { answersToRetest: questionData })
+    isEmpty ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full px-6 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-semibold text-slate-900 mb-2", children: "아직 다시 풀 문제가 없어요" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-500 mb-6 leading-relaxed", children: [
+        "모의고사를 풀고 틀린 문제가 생기면",
+        /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
+        "여기에서 다시 풀어볼 수 있어요."
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => navigate("/"),
+          className: "px-6 py-3 rounded-2xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800",
+          children: "모의고사 풀러 가기"
+        }
+      )
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(RetestCard, { answersToRetest: questionData })
   ] });
 }
 const common = {
@@ -62166,7 +62299,7 @@ const Input = reactExports.forwardRef(
       {
         type,
         className: cn(
-          "flex h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300",
+          "flex h-11 w-full rounded-lg border border-line bg-white px-4 py-3 text-base text-ink-black transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-placeholder focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-50",
           className
         ),
         ref,
@@ -62353,7 +62486,7 @@ const Separator = reactExports.forwardRef(
       decorative,
       orientation,
       className: cn(
-        "shrink-0 bg-slate-200 dark:bg-slate-800",
+        "shrink-0 bg-line dark:bg-body",
         orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
         className
       ),
@@ -71674,7 +71807,7 @@ const Calendar1 = () => {
       "a",
       {
         href: "/calendar",
-        className: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-black hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline gap-2",
+        className: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-black hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline gap-2",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar$1, { size: 20 }),
           "달력으로 보기"
@@ -71733,6 +71866,17 @@ function ExamSchedulePage() {
         }
       )
     ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      Link,
+      {
+        to: "/",
+        className: "flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-5 text-xl font-bold text-white shadow-card transition hover:bg-brand-deep active:scale-[0.99]",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(PencilLine, { size: 24 }),
+          "기출문제 무료로 풀어보기"
+        ]
+      }
+    ) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar1, {})
   ] });
 }
@@ -71969,7 +72113,7 @@ const Calendar = () => {
         "a",
         {
           href: "/schedule",
-          className: "mt-9 text-sm font-medium text-black hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline",
+          className: "mt-9 text-sm font-medium text-black hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline",
           children: "돌아가기"
         }
       ),

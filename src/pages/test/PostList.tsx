@@ -103,7 +103,7 @@ export function PostList({
 
         return (
           <li key={id} className="flex flex-col flex-1">
-            <h2 className="text-xl font-bold text-center text-slate-900 leading-relaxed mb-6 px-2">
+            <h2 className="text-xl font-bold text-center text-ink leading-relaxed mb-6 px-2">
               {content}
             </h2>
 
@@ -116,7 +116,7 @@ export function PostList({
                         <>
                           {loadingImages[example.content] && (
                             <div className="flex justify-center items-center">
-                              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-slate-500"></div>
+                              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-brand"></div>
                             </div>
                           )}
                           <img
@@ -132,7 +132,7 @@ export function PostList({
                           />
                         </>
                       ) : (
-                        <p className="text-sm text-slate-600 text-center">
+                        <p className="text-sm text-muted text-center">
                           {example.content}
                         </p>
                       )}
@@ -150,7 +150,7 @@ export function PostList({
 
                   // 색상 결정 로직
                   let stateClass =
-                    "border-slate-200 text-slate-900 hover:border-slate-400";
+                    "border-line text-ink hover:border-brand";
                   if (showFeedback) {
                     if (isSelected && isAnswerCorrect) {
                       // 사용자가 정답을 선택
@@ -165,12 +165,11 @@ export function PostList({
                       stateClass =
                         "border-emerald-500 text-emerald-700 bg-white";
                     } else {
-                      stateClass = "border-slate-200 text-slate-500 bg-white";
+                      stateClass = "border-line text-faint bg-white";
                     }
                   } else if (isSelected) {
-                    // 일반 모드의 선택 상태
-                    stateClass =
-                      "border-slate-900 bg-slate-900 text-white";
+                    // 선택 상태는 민트 틴트 — 채워진 청록은 제출 버튼 하나만
+                    stateClass = "border-brand bg-brand-tint text-ink";
                   }
 
                   return (
@@ -198,7 +197,7 @@ export function PostList({
                           <div className="flex-1 flex justify-center">
                             {loadingImages[option.content] && (
                               <div className="flex justify-center items-center">
-                                <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-slate-500"></div>
+                                <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-brand"></div>
                               </div>
                             )}
                             <img
@@ -230,7 +229,7 @@ export function PostList({
                 <p className="text-sm font-semibold text-red-700">
                   오답이에요
                 </p>
-                <p className="text-sm text-slate-700 mt-1 leading-relaxed break-keep">
+                <p className="text-sm text-body mt-1 leading-relaxed break-keep">
                   정답은{" "}
                   <span className="font-semibold text-emerald-700">
                     {correctOption.no}번
@@ -239,14 +238,14 @@ export function PostList({
                   {correctOption.type !== "image" && (
                     <>
                       {" "}
-                      <span className="text-slate-900">
+                      <span className="text-ink">
                         {correctOption.content}
                       </span>
                     </>
                   )}
                 </p>
                 {explanation && (
-                  <p className="text-sm text-slate-700 mt-3 pt-3 border-t border-red-200 leading-relaxed break-keep whitespace-pre-line">
+                  <p className="text-sm text-body mt-3 pt-3 border-t border-red-200 leading-relaxed break-keep whitespace-pre-line">
                     {explanation}
                   </p>
                 )}
@@ -257,7 +256,7 @@ export function PostList({
             {isLastPage ? (
               <button
                 onClick={onSubmit}
-                className="mt-6 w-full py-4 rounded-2xl bg-slate-900 text-white text-base font-semibold hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                className="mt-6 w-full py-4 rounded-2xl bg-brand text-white text-base font-semibold hover:bg-brand-deep focus:outline-none focus:ring-2 focus:ring-brand"
               >
                 제출하기
               </button>
@@ -265,7 +264,7 @@ export function PostList({
               showWrongHint && (
                 <button
                   onClick={() => setCurrentPage(currentPage + 1)}
-                  className="mt-3 w-full py-3 rounded-2xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800"
+                  className="mt-3 w-full py-3 rounded-2xl bg-brand text-white text-sm font-semibold hover:bg-brand-deep"
                 >
                   다음 문제
                 </button>

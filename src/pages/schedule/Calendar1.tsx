@@ -191,7 +191,7 @@ const Calendar1: React.FC = () => {
       </h1>
       <a
         href="/calendar"
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-black hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline gap-2"
+        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-black hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 underline hover:no-underline focus:no-underline gap-2"
       >
         <Calendar size={20} />
         달력으로 보기

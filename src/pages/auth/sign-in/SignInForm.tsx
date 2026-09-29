@@ -125,7 +125,11 @@ export default function SignInForm() {
           </Button>
 
           {/* 아몬드영 IdP 로그인 (supabase/functions/almond-auth) */}
-          <Button asChild variant="outline" className="w-full">
+          {/* 아몬드영 브랜드 컬러 #ffa500 (almondyoung auth-web --primary) */}
+          <Button
+            asChild
+            className="w-full bg-[#ffa500] text-white hover:bg-[#f09a00]"
+          >
             <a
               href={`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/almond-auth/start?returnTo=${encodeURIComponent(from)}`}
             >

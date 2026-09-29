@@ -123,6 +123,15 @@ export default function SignInForm() {
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "로그인 중..." : "로그인"}
           </Button>
+
+          {/* 아몬드영 IdP 로그인 (supabase/functions/almond-auth) */}
+          <Button asChild variant="outline" className="w-full">
+            <a
+              href={`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/almond-auth/start?returnTo=${encodeURIComponent(from)}`}
+            >
+              아몬드영으로 로그인
+            </a>
+          </Button>
         </form>
       </Form>
     </div>

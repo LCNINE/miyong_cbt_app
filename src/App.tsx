@@ -6,6 +6,7 @@ import Retest from "./pages/retest/Retest";
 import Ai from "./pages/ai/Ai";
 import SignIn from "./pages/auth/sign-in/Sign-in";
 import SignUp from "./pages/auth/sign-up/Sign-up";
+import AlmondCallback from "./pages/auth/almond/AlmondCallback";
 import { AuthProvider } from "./pages/auth/AuthContext";
 import ProtectedRoute from "./pages/layout/ProtectedRoute";
 import Result from "./pages/test/Result";
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "sign-in",
         element: <SignIn />,
+      },
+      {
+        path: "auth/almond",
+        element: <AlmondCallback />,
       },
       {
         path: "sign-up",

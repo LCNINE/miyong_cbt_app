@@ -1,3 +1,0 @@
-User-agent: *
-Allow:/
-Sitemap: https://www.미용필기시험.com/sitemap.xml

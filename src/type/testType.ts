@@ -54,6 +54,7 @@ export interface reTestQustion {
   no: number;
   content: string;
   made_at: string | null;
+  explanation?: string | null;
   examples: Example[];
   options: Option[];
   chose_option: number | null;

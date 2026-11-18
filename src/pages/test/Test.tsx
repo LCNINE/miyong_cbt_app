@@ -30,6 +30,8 @@ export default function Test() {
     [key: number]: number | null;
   }>({});
   const [instantFeedback, setInstantFeedback] = useState(false);
+  // 실제 필기시험과 동일: 60문항 60분
+  const [remainingSec, setRemainingSec] = useState(60 * 60);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -156,6 +158,22 @@ export default function Test() {
   };
 
   const totalQuestions = questionData.length;
+
+  // 문제 로딩 후 타이머 시작
+  useEffect(() => {
+    if (!totalQuestions) return;
+    const timer = setInterval(
+      () => setRemainingSec((s) => Math.max(0, s - 1)),
+      1000
+    );
+    return () => clearInterval(timer);
+  }, [totalQuestions]);
+
+  // 시간 종료 시 자동 제출
+  useEffect(() => {
+    if (remainingSec === 0) handleSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [remainingSec]);
   const progressValue =
     totalQuestions > 0 ? (currentPage / totalQuestions) * 100 : 0;
 
@@ -171,7 +189,16 @@ export default function Test() {
       <TestHeader confirmExit />
 
       <div className="px-4 pt-5 pb-2 shrink-0">
-        <div className="flex items-center justify-end mb-2">
+        <div className="flex items-center justify-between mb-2">
+          <span
+            className={`text-sm font-semibold tabular-nums ${
+              remainingSec <= 5 * 60 ? "text-red-500" : "text-slate-700"
+            }`}
+            aria-label="남은 시간"
+          >
+            ⏱ {String(Math.floor(remainingSec / 60)).padStart(2, "0")}:
+            {String(remainingSec % 60).padStart(2, "0")}
+          </span>
           <label className="inline-flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
             <input
               type="checkbox"

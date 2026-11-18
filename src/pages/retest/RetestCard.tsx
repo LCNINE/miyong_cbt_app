@@ -60,6 +60,17 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
   };
 
   return (
+    <>
+    {answersToRetest.length > 0 && (
+      <div className="flex justify-end px-4 pt-4 print:hidden">
+        <button
+          onClick={() => window.print()}
+          className="px-4 py-2 text-sm font-semibold bg-slate-900 text-white rounded-xl hover:bg-slate-800"
+        >
+          PDF 저장
+        </button>
+      </div>
+    )}
     <ol className="list-none list-inside space-y-8">
       {answersToRetest.map(
         ({
@@ -70,8 +81,9 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
           options,
           chose_option,
           correct_option,
+          explanation,
         }) => (
-          <li key={id} className="p-4 bg-white rounded-lg shadow-md">
+          <li key={id} className="p-4 bg-white rounded-lg shadow-md break-inside-avoid print:shadow-none print:border">
             <h2 className="text-xl font-semibold mb-4">
               문제 {no}: {content}
             </h2>
@@ -111,6 +123,8 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
                             ? chose_option === correct_option
                               ? "border-green-500 bg-green-100" // 맞춘 경우
                               : "border-red-500 bg-red-100" // 틀린 경우
+                            : option.no === correct_option
+                            ? "border-green-500" // 정답 표시
                             : "border-gray-300 hover:border-blue-500"
                         }`}
                       >
@@ -159,10 +173,16 @@ export default function RetestCard({ answersToRetest }: RetestCardProb) {
               <h4 className="text-md font-semibold text-green-500">
                 정답: {correct_option}
               </h4>
+              {explanation && (
+                <p className="mt-2 text-sm text-slate-700 whitespace-pre-line">
+                  {explanation}
+                </p>
+              )}
             </div>
           </li>
         )
       )}
     </ol>
+    </>
   );
 }

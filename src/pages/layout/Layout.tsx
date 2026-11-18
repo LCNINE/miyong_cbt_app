@@ -20,13 +20,13 @@ const Layout = () => {
   const hideChrome = isTestRoute || isResultRoute;
 
   return (
-    <div className="max-w-screen-md h-screen max-h-screen flex flex-col mx-auto shadow-md">
-      {!hideChrome && <Header />}
-      <main className="flex-1 overflow-y-auto ">
+    <div className="max-w-screen-md h-screen max-h-screen flex flex-col mx-auto shadow-md print:h-auto print:max-h-none print:shadow-none">
+      {!hideChrome && <div className="contents print:hidden"><Header /></div>}
+      <main className="flex-1 overflow-y-auto print:overflow-visible">
         <Outlet />
         <Toaster />
       </main>
-      {!hideChrome && <Footer />}
+      {!hideChrome && <div className="contents print:hidden"><Footer /></div>}
     </div>
   );
 };
